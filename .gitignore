@@ -1,0 +1,52 @@
+## .NET
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.userprefs
+*.sln.docstates
+*.DotSettings.user
+
+## Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+build/
+bld/
+
+## NuGet
+*.nupkg
+**/packages/
+project.lock.json
+project.fragment.lock.json
+
+## Angular / Node
+node_modules/
+dist/
+.angular/
+tmp/
+npm-debug.log*
+yarn-error.log*
+
+## IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+## OS
+Thumbs.db
+.DS_Store
+
+## Logs
+logs/
+
+## User secrets
+secrets.json
+
+## Environment files
+*.env
+.env.*
