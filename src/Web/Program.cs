@@ -1,5 +1,6 @@
 using Application;
 using Infrastructure;
+using Infrastructure.Persistence;
 using Serilog;
 using Web.Middlewares;
 
@@ -55,6 +56,9 @@ app.UseSerilogRequestLogging();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+
+    // Seed development data
+    await app.Services.SeedDevelopmentDataAsync();
 }
 
 app.UseHttpsRedirection();

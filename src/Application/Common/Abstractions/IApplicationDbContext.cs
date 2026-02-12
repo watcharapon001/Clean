@@ -1,11 +1,12 @@
+using Application.Common.Abstractions.SU;
+using Application.Common.Abstractions.DB;
+using Domain.Entities.SU;
+using Domain.Entities.DB;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Common.Abstractions;
 
-public interface IApplicationDbContext
+public interface IApplicationDbContext : ISystemDbContext, IBusinessDbContext
 {
-    // Add DbSet properties here as entities are created
-    // Example: DbSet<Product> Products { get; }
-
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }
