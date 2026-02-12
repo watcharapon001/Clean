@@ -34,6 +34,7 @@ public class ExceptionHandlingMiddleware
             NotFoundException => (HttpStatusCode.NotFound, "Not Found"),
             ValidationException => (HttpStatusCode.BadRequest, "Validation Error"),
             ForbiddenAccessException => (HttpStatusCode.Forbidden, "Forbidden"),
+            UnauthorizedAccessException => (HttpStatusCode.Unauthorized, "Unauthorized"),
             _ => (HttpStatusCode.InternalServerError, "Internal Server Error")
         };
 
