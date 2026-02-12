@@ -20,10 +20,26 @@ public static class SeedDataExtensions
         // Ensure schema & tables exist
         await db.Database.MigrateAsync();
 
-        // Skip if already seeded
+        // Check if seeded, but also ensure Admin password is correct (Fix for login issue)
+        var existingAdmin = await db.Users.FirstOrDefaultAsync(u => u.Username == "admin");
+        if (existingAdmin != null)
+        {
+             var resetHasher = new PasswordHasher<SuUser>();
+             var newHash = resetHasher.HashPassword(existingAdmin, "Admin123!");
+             
+             // Only update if different (optional, but good for perf) - actually just force it to be sure
+             existingAdmin.PasswordHash = newHash;
+             existingAdmin.SecurityStamp = GenerateSecurityStamp(); // Invalidate old sessions
+             
+             db.Users.Update(existingAdmin);
+             await db.SaveChangesAsync();
+             logger.LogInformation("Admin password reset to 'Admin123!'.");
+        }
+
+        // Skip if already seeded (Organizes check from before)
         if (await db.Organizes.AnyAsync())
         {
-            logger.LogInformation("Database already seeded. Skipping.");
+            logger.LogInformation("Database already seeded. Skipping creation.");
             return;
         }
 
