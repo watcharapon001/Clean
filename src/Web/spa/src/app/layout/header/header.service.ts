@@ -1,15 +1,19 @@
 import { Injectable, inject, Signal } from '@angular/core';
-import { AuthService, Organization, LoginResponse } from '../../../core/auth/auth.service';
+import { AuthService, Organization, User, LoginResponse } from '../../core/auth/auth.service';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SwitchOrgService {
+export class HeaderService {
   private authService = inject(AuthService);
 
   get currentOrg(): Signal<Organization | null> {
     return this.authService.currentOrg;
+  }
+
+  get currentUser(): Signal<User | null> {
+    return this.authService.currentUser;
   }
 
   getOrgs(): Observable<Organization[]> {

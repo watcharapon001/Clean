@@ -1,7 +1,9 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
-import { LoginComponent } from './features/auth/login/login.component'; // Lazy loading is better for features, but direct import for now is fine for small apps
+import { LoginComponent } from './features/auth/login/login.component';
 import { SwitchOrgComponent } from './features/auth/switch-org/switch-org.component';
+import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
+import { DashboardComponent } from './features/dashboard/dashboard.component';
 
 export const routes: Routes = [
   {
@@ -9,17 +11,19 @@ export const routes: Routes = [
     component: LoginComponent
   },
   {
-    path: 'auth/switch-org',
-    component: SwitchOrgComponent,
-    canActivate: [authGuard]
-  },
-  {
     path: '',
-    canActivate: [authGuard], 
-    component: SwitchOrgComponent // Temporary PLACEHOLDER: Redirect to dashboard or home usually. 
-    // For now, let's just show SwitchOrg or a dummy home if verified. 
-    // Ideally we have a storage for 'Dashboard' or 'Home'.
-    // Let's create a simple inline component for Home to verify auth works.
+    component: MainLayoutComponent,
+    canActivate: [authGuard],
+    children: [
+      {
+        path: '',
+        component: DashboardComponent // Replaced SwitchOrgComponent
+      },
+      {
+        path: 'auth/switch-org',
+        component: SwitchOrgComponent
+      }
+    ]
   },
   {
     path: '**',

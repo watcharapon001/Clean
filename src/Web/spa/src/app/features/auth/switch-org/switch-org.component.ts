@@ -59,4 +59,8 @@ export class SwitchOrgComponent {
   goBack() {
     this.router.navigate(['/']);
   }
+
+  logout() {
+    this.switchOrgService.logout();
+  }
 }
