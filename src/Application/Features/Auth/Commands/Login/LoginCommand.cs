@@ -36,14 +36,24 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
 
     public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        // 1. Find User
+        // 1. Find User (Fetch by username first to check specific status)
         var user = await _context.Users
             .Include(u => u.UserOrgs)
             .ThenInclude(uo => uo.Org)
-            .FirstOrDefaultAsync(u => u.Username == request.Username && u.IsActive, cancellationToken);
+            .FirstOrDefaultAsync(u => u.Username == request.Username, cancellationToken);
 
         if (user == null)
             throw new UnauthorizedAccessException("Invalid credentials");
+
+        // Check Status
+        if (!user.IsActive)
+            throw new UnauthorizedAccessException("User is inactive"); // Or Forbidden, but usually Auth fails
+
+        if (user.IsLocked) {
+             if (user.LockoutEndAt.HasValue && user.LockoutEndAt > DateTimeOffset.UtcNow)
+                throw new UnauthorizedAccessException("User is locked");
+             // If lock expired, we might unlock, but for simplicity just throw if IsLocked is true
+        }
 
         // 2. Verify Password
         if (!_passwordHasher.VerifyPassword(user, user.PasswordHash!, request.Password))
