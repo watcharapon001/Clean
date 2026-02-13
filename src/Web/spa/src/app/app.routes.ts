@@ -15,15 +15,17 @@ export const routes: Routes = [
     component: MainLayoutComponent,
     canActivate: [authGuard],
     children: [
-      {
-        path: '',
-        component: DashboardComponent // Replaced SwitchOrgComponent
-      },
-      {
-        path: 'auth/switch-org',
-        component: SwitchOrgComponent
-      }
+      { path: 'dashboard', loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent) },
+      
+      // DB Module
+      { path: 'db/employees', loadComponent: () => import('./features/db/employee-list/employee-list.component').then(m => m.EmployeeListComponent) },
+      { path: 'db/employees/new', loadComponent: () => import('./features/db/employee-form/employee-form.component').then(m => m.EmployeeFormComponent) },
+      { path: 'db/employees/:id', loadComponent: () => import('./features/db/employee-form/employee-form.component').then(m => m.EmployeeFormComponent) },
     ]
+  },
+  {
+    path: 'auth/switch-org',
+    component: SwitchOrgComponent
   },
   {
     path: '**',
