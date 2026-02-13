@@ -3,7 +3,7 @@ using Domain.Entities.SU;
 
 namespace Domain.Entities.DB;
 
-public class DbEmployee : BaseAuditableEntity
+public class DbEmployee : BaseAuditableEntity, IOrgEntity
 {
     public Guid EmployeeId { get; set; }
     public Guid OrgId { get; set; }
