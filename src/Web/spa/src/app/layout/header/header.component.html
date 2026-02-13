@@ -1,0 +1,35 @@
+<nav class="navbar navbar-expand navbar-light bg-white border-bottom fixed-top" style="margin-left: 280px;">
+    <div class="container-fluid">
+
+        <!-- Left: Empty or Toggle -->
+        <div class="navbar-nav me-auto">
+            <!-- Toggle button could go here -->
+        </div>
+
+        <!-- Center: Org Switcher -->
+        <div class="d-flex justify-content-center flex-grow-1">
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="orgDropdown"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ currentOrg()?.orgName || 'Select Org' }}
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="orgDropdown">
+                    <li *ngFor="let org of organizations()">
+                        <a class="dropdown-item" (click)="switchOrg(org.orgId)" style="cursor: pointer;">
+                            {{ org.orgName }}
+                            <span *ngIf="currentOrg()?.orgId === org.orgId" class="float-end text-primary">✓</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Right: Logout -->
+        <div class="navbar-nav ms-auto">
+            <button (click)="logout()" class="btn btn-danger">
+                Logout
+            </button>
+        </div>
+
+    </div>
+</nav>

@@ -1,0 +1,37 @@
+<div class="d-flex flex-column flex-shrink-0 p-3 bg-light"
+    style="width: 280px; height: 100vh; position: fixed; top: 0; left: 0; overflow-y: auto;">
+
+    <!-- Brand Card -->
+    <div class="card mb-3 border-0 shadow-sm bg-dark text-white">
+        <div class="card-body d-flex justify-content-center align-items-center py-4">
+            <a href="/" class="text-white text-decoration-none">
+                <span class="fs-4 fw-bold">CleanApp</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Menu Card -->
+    <div class="card border-0 shadow-sm bg-white flex-grow-1">
+        <div class="card-body p-2">
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a routerLink="/" routerLinkActive="active bg-primary text-white"
+                        [routerLinkActiveOptions]="{exact: true}"
+                        class="nav-link text-dark d-flex align-items-center mb-1">
+                        <i class="bi bi-speedometer2 me-3"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <!-- Example of another link -->
+                <!-- 
+                <li class="nav-item">
+                    <a href="#" class="nav-link text-dark d-flex align-items-center">
+                        <i class="bi bi-people me-3"></i>
+                        Employees
+                    </a>
+                </li> 
+                -->
+            </ul>
+        </div>
+    </div>
+</div>
