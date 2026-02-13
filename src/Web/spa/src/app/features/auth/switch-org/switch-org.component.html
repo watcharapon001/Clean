@@ -1,0 +1,28 @@
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="w-full max-w-md p-8 bg-white rounded shadow-md">
+        <h2 class="mb-6 text-2xl font-bold text-center text-gray-900">Switch Organization</h2>
+
+        <div *ngIf="isLoading()" class="text-center text-gray-500">Loading organizations...</div>
+
+        <ul *ngIf="!isLoading()" class="space-y-3">
+            <li *ngFor="let org of organizations()" (click)="switchOrg(org.orgId)"
+                class="p-4 border rounded cursor-pointer hover:bg-gray-50 transition-colors flex justify-between items-center"
+                [class.border-indigo-500]="isCurrentOrg(org.orgId)" [class.bg-indigo-50]="isCurrentOrg(org.orgId)">
+                <div>
+                    <div class="font-medium text-gray-900">{{ org.orgName }}</div>
+                    <div class="text-sm text-gray-500">{{ org.orgCode }}</div>
+                </div>
+                <span *ngIf="isCurrentOrg(org.orgId)"
+                    class="px-2 py-1 text-xs font-semibold text-indigo-700 bg-indigo-100 rounded-full">Current</span>
+            </li>
+        </ul>
+
+        <div *ngIf="errorMessage()" class="mt-4 text-sm text-center text-red-600">
+            {{ errorMessage() }}
+        </div>
+
+        <div class="mt-6 text-center">
+            <button (click)="goBack()" class="text-indigo-600 hover:text-indigo-800 text-sm">Cancel</button>
+        </div>
+    </div>
+</div>
