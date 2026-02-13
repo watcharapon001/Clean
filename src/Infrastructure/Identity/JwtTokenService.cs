@@ -18,7 +18,7 @@ public class JwtTokenService : ITokenService
 
     public string GenerateAccessToken(string userId, string username, string role, string orgId)
     {
-        var key = Encoding.ASCII.GetBytes(_jwtSettings.Key);
+        var key = Encoding.UTF8.GetBytes(_jwtSettings.Key);
         var securityKey = new SymmetricSecurityKey(key);
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 

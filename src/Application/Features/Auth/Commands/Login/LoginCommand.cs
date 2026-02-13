@@ -3,11 +3,13 @@ using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
+using Application.Features.Auth.Common;
+
 namespace Application.Features.Auth.Commands.Login;
 
 public record LoginCommand(string Username, string Password) : IRequest<LoginResponse>;
 
-public record LoginResponse(string AccessToken, int ExpiresInSeconds);
+public record LoginResponse(string AccessToken, int ExpiresInSeconds, List<OrgDto> Orgs, string DefaultOrgId);
 
 public class LoginCommandValidator : AbstractValidator<LoginCommand>
 {
@@ -31,11 +33,13 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
         _tokenService = tokenService;
     }
 
+
     public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
         // 1. Find User
         var user = await _context.Users
             .Include(u => u.UserOrgs)
+            .ThenInclude(uo => uo.Org)
             .FirstOrDefaultAsync(u => u.Username == request.Username && u.IsActive, cancellationToken);
 
         if (user == null)
@@ -46,8 +50,8 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
             throw new UnauthorizedAccessException("Invalid credentials");
 
         // 3. Determine Org (Default first, otherwise first available)
-        var defaultOrg = user.UserOrgs.FirstOrDefault(uo => uo.IsDefault && uo.IsActive)
-                         ?? user.UserOrgs.FirstOrDefault(uo => uo.IsActive);
+        var userOrgs = user.UserOrgs.Where(uo => uo.IsActive && uo.Org.IsActive).ToList();
+        var defaultOrg = userOrgs.FirstOrDefault(uo => uo.IsDefault) ?? userOrgs.FirstOrDefault();
         
         var orgId = defaultOrg?.OrgId.ToString() ?? "";
 
@@ -59,6 +63,17 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
 
         var token = _tokenService.GenerateAccessToken(user.UserId.ToString(), user.Username!, role, orgId);
 
-        return new LoginResponse(token, 3600); // 1 hour hardcoded matches default settings
+        // 5. Build Response
+        var orgDtos = userOrgs.Select(uo => new OrgDto(
+            uo.OrgId.ToString(),
+            uo.Org.OrgCode,
+            uo.Org.OrgName,
+            uo.IsDefault
+        )).ToList();
+
+        return new LoginResponse(token, 3600, orgDtos, orgId); // 1 hour hardcoded matches default settings
     }
 }
+
+// Local OrgDto removed, using Application.Features.Auth.Common.OrgDto instead
+
