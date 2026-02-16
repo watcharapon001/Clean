@@ -2,17 +2,37 @@ import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { EmployeeService } from '../employee.service';
 import { LoadingService } from '../../../core/services/loading.service';
+import { AppCardComponent } from '../../../shared/components/card/card.component';
 
 @Component({
   selector: 'app-employee-form',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule],
+  imports: [
+    CommonModule, 
+    RouterModule, 
+    ReactiveFormsModule,
+    MatInputModule,
+    MatButtonModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatCardModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
+    AppCardComponent
+  ],
   templateUrl: './employee-form.component.html',
-  styles: []
+  styleUrls: ['./employee-form.component.scss']
 })
 export class EmployeeFormComponent implements OnInit {
   private fb = inject(FormBuilder);

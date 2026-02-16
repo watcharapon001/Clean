@@ -1,68 +1,123 @@
-<div class="container-fluid">
+<div class="container-fluid py-4">
+    <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>{{ isEditMode() ? 'Edit' : 'Add' }} Employee</h2>
-        <a routerLink="/db/employees" class="btn btn-outline-secondary">
-            <i class="bi bi-arrow-left me-2"></i>Back
+        <div>
+            <h2 class="mb-1 text-slate-800">{{ isEditMode() ? 'Edit' : 'Add' }} Employee</h2>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a routerLink="/db/employees"
+                            class="text-decoration-none text-muted">Employees</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ isEditMode() ? 'Edit' : 'New' }}</li>
+                </ol>
+            </nav>
+        </div>
+        <a routerLink="/db/employees" mat-stroked-button color="basic">
+            <mat-icon>arrow_back</mat-icon>
+            Back to List
         </a>
     </div>
 
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <form [formGroup]="form">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <app-card [title]="(isEditMode() ? 'Edit' : 'New') + ' Employee Details'" [showFooter]="true">
 
-                <div class="mb-3">
-                    <label class="form-label">Employee Code</label>
-                    <input type="text" class="form-control" formControlName="employeeCode"
-                        [class.is-invalid]="form.get('employeeCode')?.invalid && form.get('employeeCode')?.touched">
-                    <div class="invalid-feedback">Employee Code is required</div>
-                </div>
+                <form [formGroup]="form" (ngSubmit)="onSubmit()" class="d-flex flex-column gap-3 p-3">
 
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">First Name</label>
-                        <input type="text" class="form-control" formControlName="firstName"
-                            [class.is-invalid]="form.get('firstName')?.invalid && form.get('firstName')?.touched">
-                        <div class="invalid-feedback">First Name is required</div>
+                    <!-- Identity Section -->
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <h6 class="text-uppercase text-muted small fw-bold mb-3 border-bottom pb-2">Identity</h6>
+                        </div>
+
+                        <div class="col-md-4">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Employee Code</mat-label>
+                                <input matInput formControlName="employeeCode" placeholder="EMP-001">
+                                <mat-error *ngIf="form.get('employeeCode')?.hasError('required')">Code is
+                                    required</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-md-8">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Display Name</mat-label>
+                                <input matInput formControlName="displayName" placeholder="John Doe">
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>First Name</mat-label>
+                                <input matInput formControlName="firstName" placeholder="John">
+                                <mat-error *ngIf="form.get('firstName')?.hasError('required')">First Name is
+                                    required</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Last Name</mat-label>
+                                <input matInput formControlName="lastName" placeholder="Doe">
+                            </mat-form-field>
+                        </div>
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Last Name</label>
-                        <input type="text" class="form-control" formControlName="lastName">
+
+                    <!-- Contact Section -->
+                    <div class="row g-3 mt-2">
+                        <div class="col-12">
+                            <h6 class="text-uppercase text-muted small fw-bold mb-3 border-bottom pb-2">Contact
+                                Information</h6>
+                        </div>
+
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Email</mat-label>
+                                <input matInput type="email" formControlName="email" placeholder="john.doe@example.com">
+                                <mat-icon matSuffix>email</mat-icon>
+                                <mat-error *ngIf="form.get('email')?.hasError('email')">Invalid email
+                                    address</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Phone</mat-label>
+                                <input matInput formControlName="phone" placeholder="+1 (555) 000-0000">
+                                <mat-icon matSuffix>phone</mat-icon>
+                            </mat-form-field>
+                        </div>
                     </div>
-                </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Display Name</label>
-                    <input type="text" class="form-control" formControlName="displayName">
-                </div>
+                    <!-- Settings Section -->
+                    <div class="row g-3 mt-2">
+                        <div class="col-12">
+                            <h6 class="text-uppercase text-muted small fw-bold mb-3 border-bottom pb-2">Settings</h6>
+                        </div>
 
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="email" class="form-control" formControlName="email">
+                        <div class="col-12">
+                            <mat-checkbox formControlName="isActive" color="primary">
+                                Active Account
+                                <span class="d-block small text-muted fw-normal mt-1">
+                                    Disable this to prevent the employee from logging in.
+                                </span>
+                            </mat-checkbox>
+                        </div>
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Phone</label>
-                        <input type="text" class="form-control" formControlName="phone">
-                    </div>
-                </div>
 
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="isActive" formControlName="isActive">
-                    <label class="form-check-label" for="isActive">Active</label>
-                </div>
+                </form>
 
-                <div class="d-flex justify-content-end">
-                    <button (click)="onSubmit()" class="btn btn-primary" [disabled]="form.invalid || isLoading()">
-                        @if (isLoading()) {
-                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                        Saving...
-                        } @else {
-                        Save
-                        }
+                <!-- Footer Actions -->
+                <div footer class="d-flex justify-content-end gap-2 w-100">
+                    <a mat-button routerLink="/db/employees" color="warn">Cancel</a>
+                    <button mat-raised-button color="primary" (click)="onSubmit()"
+                        [disabled]="form.invalid || isLoading()">
+                        <mat-icon *ngIf="!isLoading()">save</mat-icon>
+                        <mat-spinner diameter="20" *ngIf="isLoading()" class="d-inline-block me-2"></mat-spinner>
+                        {{ isLoading() ? 'Saving...' : 'Save Changes' }}
                     </button>
                 </div>
 
-            </form>
+            </app-card>
         </div>
     </div>
 </div>

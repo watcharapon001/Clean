@@ -13,5 +13,5 @@ import { MainLayoutService } from './main-layout.service';
   styleUrls: ['./main-layout.component.scss']
 })
 export class MainLayoutComponent {
-  private mainLayoutService = inject(MainLayoutService);
+  mainLayoutService = inject(MainLayoutService);
 }

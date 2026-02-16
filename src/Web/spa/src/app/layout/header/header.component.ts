@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { Organization } from '../../core/auth/auth.service';
 import { HeaderService } from './header.service';
+import { MainLayoutService } from '../main-layout/main-layout.service';
 
 @Component({
   selector: 'app-header',
@@ -13,6 +14,7 @@ import { HeaderService } from './header.service';
 })
 export class HeaderComponent implements OnInit {
   private headerService = inject(HeaderService);
+  public mainLayoutService = inject(MainLayoutService);
   private router = inject(Router);
 
   organizations = signal<Organization[]>([]);

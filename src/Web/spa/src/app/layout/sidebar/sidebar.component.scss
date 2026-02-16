@@ -1,1 +1,24 @@
-// Sidebar specific styles
+/* Custom active state for sidebar links */
+.active-nav-link {
+    background-color: #1e293b;
+    /* Slate-800 */
+    color: #ffffff !important;
+}
+
+/* Scrollbar styling for webkit */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #475569;
+}

@@ -1,14 +1,16 @@
-<div>
+<div class="d-flex w-100 h-100 overflow-hidden">
     <!-- Sidebar -->
-    <app-sidebar></app-sidebar>
+    <app-sidebar class="flex-shrink-0" [style.width]="mainLayoutService.isSidebarOpen() ? '280px' : '0px'"
+        [style.transition]="'width 0.3s ease-in-out'" style="overflow: hidden;">
+    </app-sidebar>
 
     <!-- Main Content Wrapper -->
-    <div style="margin-left: 280px;">
+    <div class="flex-grow-1 d-flex flex-column h-100 overflow-hidden position-relative">
         <!-- Header -->
         <app-header></app-header>
 
         <!-- Content -->
-        <main class="container-fluid p-4" style="margin-top: 56px;"> <!-- 56px is approx navbar height -->
+        <main class="flex-grow-1 overflow-auto p-4 bg-slate-50">
             <router-outlet></router-outlet>
         </main>
     </div>
