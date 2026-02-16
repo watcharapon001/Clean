@@ -1,8 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MainLayoutService {
-  // Logic for main layout state (e.g., sidebar toggling for mobile) can go here
+  readonly isSidebarOpen = signal(true);
+
+  toggleSidebar() {
+    this.isSidebarOpen.update(v => !v);
+  }
 }

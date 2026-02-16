@@ -1,0 +1,14 @@
+<mat-card class="app-card border-0 shadow-sm" [ngClass]="customClass">
+    <div class="d-flex justify-content-between align-items-center p-3 border-bottom" *ngIf="title">
+        <h5 class="mb-0 text-slate-800 fw-bold">{{ title }}</h5>
+        <div class="card-actions">
+            <ng-content select="[actions]"></ng-content>
+        </div>
+    </div>
+    <mat-card-content class="p-0">
+        <ng-content></ng-content>
+    </mat-card-content>
+    <mat-card-actions class="p-3 border-top bg-light" *ngIf="showFooter">
+        <ng-content select="[footer]"></ng-content>
+    </mat-card-actions>
+</mat-card>
