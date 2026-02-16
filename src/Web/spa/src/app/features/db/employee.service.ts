@@ -30,10 +30,15 @@ export class EmployeeService {
   }
 
   createEmployee(employee: Partial<Employee>): Observable<string> {
-    return this.http.post<string>(this.apiUrl, employee);
+    return this.http.post(this.apiUrl, employee, { responseType: 'text' });
   }
 
   updateEmployee(id: string, employee: Partial<Employee>): Observable<void> {
+    console.log(this.http);
+    console.log(this.apiUrl);
+    console.log(id);
+    console.log(employee);
+    
     return this.http.put<void>(`${this.apiUrl}/${id}`, employee);
   }
 
