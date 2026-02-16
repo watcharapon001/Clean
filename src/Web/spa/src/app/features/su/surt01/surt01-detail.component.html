@@ -1,0 +1,53 @@
+<app-card [title]="(isEditMode() ? 'Edit' : 'New') + ' Profile (SURT01)'">
+    <div actions>
+        <button mat-button routerLink="/su/surt01">Back</button>
+    </div>
+
+    <div class="card-content">
+        <div class="row">
+            <div class="col-12">
+                <form [formGroup]="form" (ngSubmit)="onSubmit()" class="d-flex flex-column gap-3">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Profile Code</mat-label>
+                                <input matInput formControlName="profileCode" placeholder="Ex. ADMIN">
+                                <mat-error *ngIf="form.get('profileCode')?.hasError('required')">
+                                    Profile Code is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Profile Name</mat-label>
+                                <input matInput formControlName="profileName" placeholder="Ex. Administrator">
+                                <mat-error *ngIf="form.get('profileName')?.hasError('required')">
+                                    Profile Name is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-12">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Description</mat-label>
+                                <textarea matInput formControlName="description" rows="3"></textarea>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-12">
+                            <mat-checkbox formControlName="isActive" color="primary">Active</mat-checkbox>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end pt-3 border-top">
+                        <button mat-button type="button" routerLink="/su/surt01" class="me-2">Cancel</button>
+                        <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || isSaving()">
+                            {{ isSaving() ? 'Saving...' : 'Save' }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</app-card>

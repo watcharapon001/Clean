@@ -1,7 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SidebarService } from './sidebar.service';
+import { Menu } from './menu.model';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,8 +11,14 @@ import { SidebarService } from './sidebar.service';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit {
   private sidebarService = inject(SidebarService);
-  // MainLayoutService controls the width from the parent, but we might need it for internal state 
-  // or if we want to add a close button inside mobile sidebar
+  
+  menus = signal<Menu[]>([]);
+
+  ngOnInit() {
+    this.sidebarService.getMenus().subscribe(data => {
+      this.menus.set(data);
+    });
+  }
 }

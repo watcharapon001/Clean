@@ -11,12 +11,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { EmployeeService } from '../employee.service';
+import { EmployeeService } from './employee.service';
 import { LoadingService } from '../../../core/services/loading.service';
 import { AppCardComponent } from '../../../shared/components/card/card.component';
 
 @Component({
-  selector: 'app-employee-form',
+  selector: 'app-dbrt01-detail',
   standalone: true,
   imports: [
     CommonModule, 
@@ -31,10 +31,10 @@ import { AppCardComponent } from '../../../shared/components/card/card.component
     MatProgressSpinnerModule,
     AppCardComponent
   ],
-  templateUrl: './employee-form.component.html',
-  styleUrls: ['./employee-form.component.scss']
+  templateUrl: './dbrt01-detail.component.html',
+  styleUrls: ['./dbrt01-detail.component.scss']
 })
-export class EmployeeFormComponent implements OnInit {
+export class Dbrt01DetailComponent implements OnInit {
   private fb = inject(FormBuilder);
   private employeeService = inject(EmployeeService);
   private loadingService = inject(LoadingService);
@@ -86,7 +86,7 @@ export class EmployeeFormComponent implements OnInit {
       finalize(() => this.loadingService.hide())
     ).subscribe({
       next: () => {
-        this.router.navigate(['/db/employees']);
+        this.router.navigate(['/db/dbrt01']);
       },
       error: (err: any) => {
         console.error('Error saving employee', err);

@@ -1,0 +1,93 @@
+<app-card title="Permission Management (SURT03)">
+
+    <div class="card-content">
+        <div class="row">
+            <div class="col-12">
+                <!-- Profile Selection -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Select Profile</mat-label>
+                            <mat-select [(ngModel)]="selectedProfileId" (selectionChange)="loadPermissions()">
+                                <mat-option *ngFor="let p of profiles" [value]="p.profileId">
+                                    {{p.profileName}} ({{p.profileCode}})
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-center mt-2 mt-md-0">
+                        <button mat-flat-button color="primary" (click)="savePermissions()"
+                            [disabled]="!selectedProfileId || isSaving()">
+                            <mat-icon>save</mat-icon> {{ isSaving() ? 'Saving...' : 'Save Permissions' }}
+                        </button>
+                    </div>
+                </div>
+
+                <div *ngIf="selectedProfileId" class="table-responsive">
+                    <table mat-table [dataSource]="dataSource" class="w-100 table-hover" style="min-width: 800px;">
+
+                        <!-- Menu Name Column -->
+                        <ng-container matColumnDef="menuName">
+                            <th mat-header-cell *matHeaderCellDef> Menu Name </th>
+                            <td mat-cell *matCellDef="let element"
+                                [style.padding-left.em]="element.parentMenuId ? 2 : 0">
+                                <span *ngIf="element.parentMenuId" class="text-muted me-1">↳</span>
+                                {{element.menuName}}
+                            </td>
+                        </ng-container>
+
+                        <!-- View -->
+                        <ng-container matColumnDef="canView">
+                            <th mat-header-cell *matHeaderCellDef class="text-center"> View </th>
+                            <td mat-cell *matCellDef="let element" class="text-center">
+                                <mat-checkbox [(ngModel)]="element.canView" color="primary"></mat-checkbox>
+                            </td>
+                        </ng-container>
+
+                        <!-- Create -->
+                        <ng-container matColumnDef="canCreate">
+                            <th mat-header-cell *matHeaderCellDef class="text-center"> Create </th>
+                            <td mat-cell *matCellDef="let element" class="text-center">
+                                <mat-checkbox [(ngModel)]="element.canCreate" color="primary"></mat-checkbox>
+                            </td>
+                        </ng-container>
+
+                        <!-- Edit -->
+                        <ng-container matColumnDef="canEdit">
+                            <th mat-header-cell *matHeaderCellDef class="text-center"> Edit </th>
+                            <td mat-cell *matCellDef="let element" class="text-center">
+                                <mat-checkbox [(ngModel)]="element.canEdit" color="primary"></mat-checkbox>
+                            </td>
+                        </ng-container>
+
+                        <!-- Delete -->
+                        <ng-container matColumnDef="canDelete">
+                            <th mat-header-cell *matHeaderCellDef class="text-center"> Delete </th>
+                            <td mat-cell *matCellDef="let element" class="text-center">
+                                <mat-checkbox [(ngModel)]="element.canDelete" color="primary"></mat-checkbox>
+                            </td>
+                        </ng-container>
+
+                        <!-- Toggle All Row -->
+                        <ng-container matColumnDef="actions">
+                            <th mat-header-cell *matHeaderCellDef class="text-center"> All </th>
+                            <td mat-cell *matCellDef="let element" class="text-center">
+                                <button mat-icon-button (click)="toggleRow(element)">
+                                    <mat-icon>done_all</mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                </div>
+
+                <div *ngIf="!selectedProfileId" class="text-center p-5 text-muted">
+                    Select a profile to manage permissions.
+                </div>
+            </div>
+        </div>
+    </div>
+
+</app-card>

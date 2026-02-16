@@ -8,12 +8,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { EmployeeService, Employee } from '../employee.service';
+import { EmployeeService, Employee } from './employee.service';
 import { AppCardComponent } from '../../../shared/components/card/card.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
-  selector: 'app-employee-list',
+  selector: 'app-dbrt01',
   standalone: true,
   imports: [
     CommonModule, 
@@ -27,10 +27,10 @@ import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialo
     MatDialogModule,
     AppCardComponent
   ],
-  templateUrl: './employee-list.component.html',
-  styleUrls: ['./employee-list.component.scss']
+  templateUrl: './dbrt01.component.html',
+  styleUrls: ['./dbrt01.component.scss']
 })
-export class EmployeeListComponent implements OnInit {
+export class Dbrt01Component implements OnInit {
   private employeeService = inject(EmployeeService);
   private dialog = inject(MatDialog);
   
