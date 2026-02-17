@@ -40,6 +40,7 @@ public partial class ApplicationDbContext : DbContext, IApplicationDbContext
         return await base.SaveChangesAsync(cancellationToken);
     }
 
+    public DbSet<SuOrganize> SuOrganizes => Set<SuOrganize>();
     public DbSet<DbEmployee> DbEmployees => Set<DbEmployee>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -52,6 +53,13 @@ public partial class ApplicationDbContext : DbContext, IApplicationDbContext
 
         // Global Snake Case Convention
         modelBuilder.ApplySnakeCaseNamingConvention();
+
+        // Composite key for SuProfileMenu
+        modelBuilder.Entity<SuProfileMenu>()
+            .HasKey(pm => new { pm.ProfileId, pm.MenuId });
+            
+        modelBuilder.Entity<SuMenu>()
+            .HasKey(m => m.MenuId);
 
         // Global Org Filter
         // We need to apply this to all entities that implement IOrgEntity.

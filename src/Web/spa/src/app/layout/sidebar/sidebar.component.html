@@ -12,24 +12,24 @@
     <!-- Navigation -->
     <div class="flex-grow-1 overflow-y-auto py-3 px-3">
         <ul class="nav flex-column gap-1">
-            <li class="nav-item">
-                <a routerLink="/dashboard" routerLinkActive="active-nav-link"
+            <li class="nav-item" *ngFor="let menu of menus()">
+                <!-- Parent Menu Item -->
+                <a [routerLink]="menu.route" routerLinkActive="active-nav-link"
                     class="nav-link d-flex align-items-center px-3 py-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
-                    <i class="bi bi-speedometer2 me-3 fs-5"></i>
-                    <span class="fw-medium">Dashboard</span>
+                    <i [class]="menu.icon ? menu.icon : 'bi bi-circle'" class="me-3 fs-5"></i>
+                    <span class="fw-medium">{{ menu.menuName }}</span>
                 </a>
-            </li>
 
-            <div class="my-3 px-3 text-xs fw-bold text-slate-500 text-uppercase tracking-wider">
-                Management
-            </div>
-
-            <li class="nav-item">
-                <a routerLink="/db/employees" routerLinkActive="active-nav-link"
-                    class="nav-link d-flex align-items-center px-3 py-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
-                    <i class="bi bi-people me-3 fs-5"></i>
-                    <span class="fw-medium">Employees</span>
-                </a>
+                <!-- Child Menus (Simple indentation for now) -->
+                <ul class="nav flex-column gap-1 ms-3" *ngIf="menu.children && menu.children.length > 0">
+                    <li class="nav-item" *ngFor="let child of menu.children">
+                        <a [routerLink]="child.route" routerLinkActive="active-nav-link"
+                            class="nav-link d-flex align-items-center px-3 py-2 rounded-md text-slate-500 hover:text-white hover:bg-slate-800 transition-colors text-sm">
+                            <i [class]="child.icon ? child.icon : 'bi bi-circle'" class="me-3 fs-6"></i>
+                            <span class="fw-medium">{{ child.menuName }}</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
         </ul>
     </div>

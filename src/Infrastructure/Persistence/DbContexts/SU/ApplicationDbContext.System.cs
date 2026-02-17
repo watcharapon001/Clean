@@ -10,4 +10,6 @@ public partial class ApplicationDbContext
     public DbSet<SuUserOrg> UserOrgs => Set<SuUserOrg>();
     public DbSet<SuProfile> Profiles => Set<SuProfile>();
     public DbSet<SuUserProfile> UserProfiles => Set<SuUserProfile>();
+    public DbSet<SuMenu> Menus => Set<SuMenu>();
+    public DbSet<SuProfileMenu> ProfileMenus => Set<SuProfileMenu>();
 }

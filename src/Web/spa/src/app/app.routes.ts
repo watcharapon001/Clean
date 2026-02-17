@@ -15,12 +15,34 @@ export const routes: Routes = [
     component: MainLayoutComponent,
     canActivate: [authGuard],
     children: [
-      { path: 'dashboard', loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent) },
+      { 
+        path: 'dashboard', 
+        loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent),
+        data: { programCode: 'DBRT00' }
+      },
       
-      // DB Module
-      { path: 'db/employees', loadComponent: () => import('./features/db/employee-list/employee-list.component').then(m => m.EmployeeListComponent) },
-      { path: 'db/employees/new', loadComponent: () => import('./features/db/employee-form/employee-form.component').then(m => m.EmployeeFormComponent) },
-      { path: 'db/employees/:id', loadComponent: () => import('./features/db/employee-form/employee-form.component').then(m => m.EmployeeFormComponent) },
+      // DB Module (DBRT01)
+      { 
+        path: 'db/dbrt01', 
+        loadComponent: () => import('./features/db/dbrt01/dbrt01.component').then(m => m.Dbrt01Component),
+        data: { programCode: 'DBRT01' }
+      },
+      { 
+        path: 'db/dbrt01/detail/new', 
+        loadComponent: () => import('./features/db/dbrt01/dbrt01-detail.component').then(m => m.Dbrt01DetailComponent),
+        data: { programCode: 'DBRT01' }
+      },
+      { 
+        path: 'db/dbrt01/detail/:id', 
+        loadComponent: () => import('./features/db/dbrt01/dbrt01-detail.component').then(m => m.Dbrt01DetailComponent),
+        data: { programCode: 'DBRT01' }
+      },
+
+      // SU Module (System Setup)
+      {
+        path: 'su',
+        loadChildren: () => import('./features/su/su.routes').then(m => m.SU_ROUTES)
+      }
     ]
   },
   {

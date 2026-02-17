@@ -23,7 +23,7 @@ namespace Infrastructure.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Domain.Entities.DbEmployee", b =>
+            modelBuilder.Entity("Domain.Entities.DB.DbEmployee", b =>
                 {
                     b.Property<Guid>("EmployeeId")
                         .ValueGeneratedOnAdd()
@@ -104,7 +104,67 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("db_employee", "clean");
                 });
 
-            modelBuilder.Entity("Domain.Entities.SuOrganize", b =>
+            modelBuilder.Entity("Domain.Entities.SU.SuMenu", b =>
+                {
+                    b.Property<Guid>("MenuId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("menu_id");
+
+                    b.Property<string>("CreateBy")
+                        .HasColumnType("text")
+                        .HasColumnName("cr_by");
+
+                    b.Property<DateTimeOffset>("CreateDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("cr_date");
+
+                    b.Property<string>("Icon")
+                        .HasColumnType("text")
+                        .HasColumnName("icon");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
+
+                    b.Property<string>("MenuCode")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("menu_code");
+
+                    b.Property<string>("MenuName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("menu_name");
+
+                    b.Property<Guid?>("ParentMenuId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("parent_menu_id");
+
+                    b.Property<string>("Route")
+                        .HasColumnType("text")
+                        .HasColumnName("route");
+
+                    b.Property<int>("Sequence")
+                        .HasColumnType("integer")
+                        .HasColumnName("sequence");
+
+                    b.Property<string>("UpdateBy")
+                        .HasColumnType("text")
+                        .HasColumnName("upd_by");
+
+                    b.Property<DateTimeOffset?>("UpdateDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("upd_date");
+
+                    b.HasKey("MenuId");
+
+                    b.HasIndex("ParentMenuId");
+
+                    b.ToTable("su_menu", "clean");
+                });
+
+            modelBuilder.Entity("Domain.Entities.SU.SuOrganize", b =>
                 {
                     b.Property<Guid>("OrgId")
                         .ValueGeneratedOnAdd()
@@ -156,7 +216,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("su_organize", "clean");
                 });
 
-            modelBuilder.Entity("Domain.Entities.SuProfile", b =>
+            modelBuilder.Entity("Domain.Entities.SU.SuProfile", b =>
                 {
                     b.Property<Guid>("ProfileId")
                         .ValueGeneratedOnAdd()
@@ -213,7 +273,56 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("su_profile", "clean");
                 });
 
-            modelBuilder.Entity("Domain.Entities.SuUser", b =>
+            modelBuilder.Entity("Domain.Entities.SU.SuProfileMenu", b =>
+                {
+                    b.Property<Guid>("ProfileId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("profile_id");
+
+                    b.Property<Guid>("MenuId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("menu_id");
+
+                    b.Property<bool>("CanCreate")
+                        .HasColumnType("boolean")
+                        .HasColumnName("can_create");
+
+                    b.Property<bool>("CanDelete")
+                        .HasColumnType("boolean")
+                        .HasColumnName("can_delete");
+
+                    b.Property<bool>("CanEdit")
+                        .HasColumnType("boolean")
+                        .HasColumnName("can_edit");
+
+                    b.Property<bool>("CanView")
+                        .HasColumnType("boolean")
+                        .HasColumnName("can_view");
+
+                    b.Property<string>("CreateBy")
+                        .HasColumnType("text")
+                        .HasColumnName("cr_by");
+
+                    b.Property<DateTimeOffset>("CreateDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("cr_date");
+
+                    b.Property<string>("UpdateBy")
+                        .HasColumnType("text")
+                        .HasColumnName("upd_by");
+
+                    b.Property<DateTimeOffset?>("UpdateDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("upd_date");
+
+                    b.HasKey("ProfileId", "MenuId");
+
+                    b.HasIndex("MenuId");
+
+                    b.ToTable("su_profile_menu", "clean");
+                });
+
+            modelBuilder.Entity("Domain.Entities.SU.SuUser", b =>
                 {
                     b.Property<Guid>("UserId")
                         .ValueGeneratedOnAdd()
@@ -317,7 +426,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("su_user", "clean");
                 });
 
-            modelBuilder.Entity("Domain.Entities.SuUserOrg", b =>
+            modelBuilder.Entity("Domain.Entities.SU.SuUserOrg", b =>
                 {
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid")
@@ -369,7 +478,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("su_user_org", "clean");
                 });
 
-            modelBuilder.Entity("Domain.Entities.SuUserProfile", b =>
+            modelBuilder.Entity("Domain.Entities.SU.SuUserProfile", b =>
                 {
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid")
@@ -404,9 +513,9 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("su_user_profile", "clean");
                 });
 
-            modelBuilder.Entity("Domain.Entities.DbEmployee", b =>
+            modelBuilder.Entity("Domain.Entities.DB.DbEmployee", b =>
                 {
-                    b.HasOne("Domain.Entities.SuOrganize", "Org")
+                    b.HasOne("Domain.Entities.SU.SuOrganize", "Org")
                         .WithMany("Employees")
                         .HasForeignKey("OrgId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -416,27 +525,58 @@ namespace Infrastructure.Persistence.Migrations
                     b.Navigation("Org");
                 });
 
-            modelBuilder.Entity("Domain.Entities.SuUser", b =>
+            modelBuilder.Entity("Domain.Entities.SU.SuMenu", b =>
                 {
-                    b.HasOne("Domain.Entities.DbEmployee", "Employee")
+                    b.HasOne("Domain.Entities.SU.SuMenu", "ParentMenu")
+                        .WithMany("ChildMenus")
+                        .HasForeignKey("ParentMenuId")
+                        .HasConstraintName("fk_su_menu_su_menu_parent_menu_temp_id");
+
+                    b.Navigation("ParentMenu");
+                });
+
+            modelBuilder.Entity("Domain.Entities.SU.SuProfileMenu", b =>
+                {
+                    b.HasOne("Domain.Entities.SU.SuMenu", "Menu")
+                        .WithMany("ProfileMenus")
+                        .HasForeignKey("MenuId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_su_profile_menu_su_menu_menu_temp_id1");
+
+                    b.HasOne("Domain.Entities.SU.SuProfile", "Profile")
+                        .WithMany()
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_su_profile_menu_su_profile_profile_id");
+
+                    b.Navigation("Menu");
+
+                    b.Navigation("Profile");
+                });
+
+            modelBuilder.Entity("Domain.Entities.SU.SuUser", b =>
+                {
+                    b.HasOne("Domain.Entities.DB.DbEmployee", "Employee")
                         .WithOne("User")
-                        .HasForeignKey("Domain.Entities.SuUser", "EmployeeId")
+                        .HasForeignKey("Domain.Entities.SU.SuUser", "EmployeeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .HasConstraintName("fk_su_user_db_employee_employee_id");
 
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("Domain.Entities.SuUserOrg", b =>
+            modelBuilder.Entity("Domain.Entities.SU.SuUserOrg", b =>
                 {
-                    b.HasOne("Domain.Entities.SuOrganize", "Org")
+                    b.HasOne("Domain.Entities.SU.SuOrganize", "Org")
                         .WithMany("UserOrgs")
                         .HasForeignKey("OrgId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("fk_su_user_org_su_organize_org_id");
 
-                    b.HasOne("Domain.Entities.SuUser", "User")
+                    b.HasOne("Domain.Entities.SU.SuUser", "User")
                         .WithMany("UserOrgs")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -448,16 +588,16 @@ namespace Infrastructure.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Entities.SuUserProfile", b =>
+            modelBuilder.Entity("Domain.Entities.SU.SuUserProfile", b =>
                 {
-                    b.HasOne("Domain.Entities.SuProfile", "Profile")
+                    b.HasOne("Domain.Entities.SU.SuProfile", "Profile")
                         .WithMany("UserProfiles")
                         .HasForeignKey("ProfileId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("fk_su_user_profile_su_profile_profile_id");
 
-                    b.HasOne("Domain.Entities.SuUser", "User")
+                    b.HasOne("Domain.Entities.SU.SuUser", "User")
                         .WithMany("UserProfiles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -469,24 +609,31 @@ namespace Infrastructure.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Entities.DbEmployee", b =>
+            modelBuilder.Entity("Domain.Entities.DB.DbEmployee", b =>
                 {
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Entities.SuOrganize", b =>
+            modelBuilder.Entity("Domain.Entities.SU.SuMenu", b =>
+                {
+                    b.Navigation("ChildMenus");
+
+                    b.Navigation("ProfileMenus");
+                });
+
+            modelBuilder.Entity("Domain.Entities.SU.SuOrganize", b =>
                 {
                     b.Navigation("Employees");
 
                     b.Navigation("UserOrgs");
                 });
 
-            modelBuilder.Entity("Domain.Entities.SuProfile", b =>
+            modelBuilder.Entity("Domain.Entities.SU.SuProfile", b =>
                 {
                     b.Navigation("UserProfiles");
                 });
 
-            modelBuilder.Entity("Domain.Entities.SuUser", b =>
+            modelBuilder.Entity("Domain.Entities.SU.SuUser", b =>
                 {
                     b.Navigation("UserOrgs");
 

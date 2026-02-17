@@ -1,0 +1,75 @@
+<app-card [title]="(isEditMode() ? 'Edit' : 'New') + ' Menu (SURT02)'">
+    <div actions>
+        <button mat-button routerLink="/su/surt02">Back</button>
+    </div>
+
+    <div class="card-content">
+        <div class="row">
+            <div class="col-12">
+                <form [formGroup]="form" (ngSubmit)="onSubmit()" class="d-flex flex-column gap-3">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Menu Code</mat-label>
+                                <input matInput formControlName="menuCode" placeholder="Ex. SURT01">
+                                <mat-error *ngIf="form.get('menuCode')?.hasError('required')">Required</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Menu Name</mat-label>
+                                <input matInput formControlName="menuName" placeholder="Ex. Profile Setup">
+                                <mat-error *ngIf="form.get('menuName')?.hasError('required')">Required</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Parent Menu</mat-label>
+                                <mat-select formControlName="parentMenuId">
+                                    <mat-option [value]="null">-- None (Root) --</mat-option>
+                                    <mat-option *ngFor="let m of parentMenus" [value]="m.menuId">
+                                        {{m.menuName}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Sequence</mat-label>
+                                <input matInput type="number" formControlName="sequence">
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Route</mat-label>
+                                <input matInput formControlName="route" placeholder="Ex. /su/surt01">
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Icon (Bootstrap Icons)</mat-label>
+                                <input matInput formControlName="icon" placeholder="Ex. bi bi-person">
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-12">
+                            <mat-checkbox formControlName="isActive" color="primary">Active</mat-checkbox>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end pt-3 border-top">
+                        <button mat-button type="button" routerLink="/su/surt02" class="me-2">Cancel</button>
+                        <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || isSaving()">
+                            {{ isSaving() ? 'Saving...' : 'Save' }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</app-card>
