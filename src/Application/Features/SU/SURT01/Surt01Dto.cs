@@ -3,7 +3,7 @@ using Domain.Entities.SU;
 
 namespace Application.Features.SU.SURT01;
 
-public class ProfileDto : IMapFrom<SuProfile>
+public class Surt01Dto : IMapFrom<SuProfile>
 {
     public Guid ProfileId { get; set; }
     public string ProfileCode { get; set; } = string.Empty;

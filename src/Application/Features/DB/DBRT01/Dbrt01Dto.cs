@@ -1,6 +1,6 @@
-namespace Application.Features.DB.Employees.Queries;
+namespace Application.Features.DB.DBRT01;
 
-public record EmployeeDto(
+public record Dbrt01Dto(
     string EmployeeId,
     string OrgId,
     string EmployeeCode,

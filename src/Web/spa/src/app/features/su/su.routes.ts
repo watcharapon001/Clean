@@ -35,5 +35,20 @@ export const SU_ROUTES: Routes = [
     path: 'surt03',
     loadComponent: () => import('./surt03/surt03.component').then(m => m.Surt03Component),
     data: { programCode: 'SURT03' }
+  },
+  {
+    path: 'surt04',
+    loadComponent: () => import('./surt04/surt04.component').then(m => m.Surt04Component),
+    data: { programCode: 'SURT04' }
+  },
+  {
+    path: 'surt04/detail/new',
+    loadComponent: () => import('./surt04/surt04-detail.component').then(m => m.Surt04DetailComponent),
+    data: { programCode: 'SURT04' }
+  },
+  {
+    path: 'surt04/detail/:id',
+    loadComponent: () => import('./surt04/surt04-detail.component').then(m => m.Surt04DetailComponent),
+    data: { programCode: 'SURT04' }
   }
 ];

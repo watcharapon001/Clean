@@ -11,7 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { EmployeeService } from './employee.service';
+import { Dbrt01Service, Dbrt01 } from './dbrt01.service';
 import { LoadingService } from '../../../core/services/loading.service';
 import { AppCardComponent } from '../../../shared/components/card/card.component';
 
@@ -36,7 +36,7 @@ import { AppCardComponent } from '../../../shared/components/card/card.component
 })
 export class Dbrt01DetailComponent implements OnInit {
   private fb = inject(FormBuilder);
-  private employeeService = inject(EmployeeService);
+  private dbrt01Service = inject(Dbrt01Service);
   private loadingService = inject(LoadingService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -50,7 +50,7 @@ export class Dbrt01DetailComponent implements OnInit {
     this.form = this.fb.group({
       employeeCode: ['', Validators.required],
       firstName: ['', Validators.required],
-      lastName: [''],
+      lastName: ['', Validators.required],
       displayName: [''],
       email: ['', [Validators.email]],
       phone: [''],
@@ -62,13 +62,13 @@ export class Dbrt01DetailComponent implements OnInit {
     this.employeeId = this.route.snapshot.paramMap.get('id');
     if (this.employeeId && this.employeeId !== 'new') {
       this.isEditMode.set(true);
-      this.loadEmployee(this.employeeId);
+      this.loadDbrt01(this.employeeId);
     }
   }
 
-  loadEmployee(id: string) {
-    this.employeeService.getEmployee(id).subscribe(emp => {
-      this.form.patchValue(emp);
+  loadDbrt01(id: string) {
+    this.dbrt01Service.getDbrt01(id).subscribe(dbrt01 => {
+      this.form.patchValue(dbrt01);
     });
   }
 
@@ -76,11 +76,11 @@ export class Dbrt01DetailComponent implements OnInit {
     if (this.form.invalid) return;
 
     this.loadingService.show();
-    const empData = this.form.value;
+    const dbrt01Data = this.form.value;
 
     const action$: Observable<unknown> = (this.isEditMode() && this.employeeId)
-      ? this.employeeService.updateEmployee(this.employeeId, { ...empData, employeeId: this.employeeId })
-      : this.employeeService.createEmployee(empData);
+      ? this.dbrt01Service.updateDbrt01(this.employeeId, { ...dbrt01Data, employeeId: this.employeeId } as Dbrt01)
+      : this.dbrt01Service.createDbrt01(dbrt01Data as Dbrt01);
 
     action$.pipe(
       finalize(() => this.loadingService.hide())
@@ -89,7 +89,7 @@ export class Dbrt01DetailComponent implements OnInit {
         this.router.navigate(['/db/dbrt01']);
       },
       error: (err: any) => {
-        console.error('Error saving employee', err);
+        console.error('Error saving Dbrt01', err);
         // Optionally handle error (e.g. show toast)
       }
     });

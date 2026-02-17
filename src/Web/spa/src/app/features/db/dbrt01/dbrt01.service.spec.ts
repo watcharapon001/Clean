@@ -1,14 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { EmployeeService, Employee } from './employee.service';
+import { Dbrt01Service, Dbrt01 } from './dbrt01.service';
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 
-describe('EmployeeService', () => {
-  let service: EmployeeService;
+describe('Dbrt01Service', () => {
+  let service: Dbrt01Service;
   let httpMock: HttpTestingController;
-  const apiUrl = '/api/employees';
+  const apiUrl = '/api/dbrt01';
 
-  const mockEmployees: Employee[] = [
+  const mockDbrt01s: Dbrt01[] = [
     {
       employeeId: '1',
       orgId: 'org1',
@@ -30,9 +30,9 @@ describe('EmployeeService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [EmployeeService]
+      providers: [Dbrt01Service]
     });
-    service = TestBed.inject(EmployeeService);
+    service = TestBed.inject(Dbrt01Service);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -45,66 +45,66 @@ describe('EmployeeService', () => {
   });
 
   it('should retrieve employees', () => {
-    service.getEmployees().subscribe(employees => {
+    service.getDbrt01s().subscribe(employees => {
       expect(employees.length).toBe(2);
-      expect(employees).toEqual(mockEmployees);
+      expect(employees).toEqual(mockDbrt01s);
     });
 
     const req = httpMock.expectOne(apiUrl);
     expect(req.request.method).toBe('GET');
-    req.flush(mockEmployees);
+    req.flush(mockDbrt01s);
   });
 
   it('should retrieve a single employee', () => {
-    const mockEmployee = mockEmployees[0];
+    const mockDbrt01 = mockDbrt01s[0];
     const id = '1';
 
-    service.getEmployee(id).subscribe(employee => {
-      expect(employee).toEqual(mockEmployee);
+    service.getDbrt01(id).subscribe(employee => {
+      expect(employee).toEqual(mockDbrt01);
     });
 
     const req = httpMock.expectOne(`${apiUrl}/${id}`);
     expect(req.request.method).toBe('GET');
-    req.flush(mockEmployee);
+    req.flush(mockDbrt01);
   });
 
   it('should create an employee', () => {
-    const newEmployee: Partial<Employee> = {
+    const newDbrt01: Partial<Dbrt01> = {
       firstName: 'New',
       lastName: 'User'
     };
     const responseId = '123';
 
-    service.createEmployee(newEmployee).subscribe(id => {
+    service.createDbrt01(newDbrt01).subscribe(id => {
       expect(id).toBe(responseId);
     });
 
     const req = httpMock.expectOne(apiUrl);
     expect(req.request.method).toBe('POST');
-    expect(req.request.body).toEqual(newEmployee);
+    expect(req.request.body).toEqual(newDbrt01);
     req.flush(responseId);
   });
 
   it('should update an employee', () => {
     const id = '1';
-    const updatedEmployee: Partial<Employee> = {
+    const updatedDbrt01: Partial<Dbrt01> = {
        firstName: 'Updated'
     };
 
-    service.updateEmployee(id, updatedEmployee).subscribe(() => {
+    service.updateDbrt01(id, updatedDbrt01).subscribe(() => {
         // success
     });
 
     const req = httpMock.expectOne(`${apiUrl}/${id}`);
     expect(req.request.method).toBe('PUT');
-    expect(req.request.body).toEqual(updatedEmployee);
+    expect(req.request.body).toEqual(updatedDbrt01);
     req.flush({});
   });
 
   it('should delete an employee', () => {
     const id = '1';
 
-    service.deleteEmployee(id).subscribe(() => {
+    service.deleteDbrt01(id).subscribe(() => {
         // success
     });
 

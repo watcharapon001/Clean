@@ -18,13 +18,13 @@ public class Surt01Controller : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<ProfileDto>>> GetList()
+    public async Task<ActionResult<List<Surt01Dto>>> GetList()
     {
         return await _sender.Send(new GetSurt01Query());
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<ProfileDto>> Get(Guid id)
+    public async Task<ActionResult<Surt01Dto>> Get(Guid id)
     {
         var result = await _sender.Send(new GetSurt01DetailQuery(id));
         if (result == null) return NotFound();

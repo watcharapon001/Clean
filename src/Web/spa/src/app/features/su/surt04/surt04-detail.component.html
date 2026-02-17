@@ -1,0 +1,193 @@
+<app-card [title]="(isEditMode() ? 'Edit' : 'New') + ' User (SURT04)'" [showFooter]="true">
+    <div actions>
+        <button mat-button routerLink="/su/surt04">Back</button>
+    </div>
+
+    <div class="card-content">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <form [formGroup]="form" (ngSubmit)="onSubmit()" class="d-flex flex-column gap-3 p-3">
+
+                    <!-- Identity Section -->
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <h6 class="text-uppercase text-muted small fw-bold mb-3 border-bottom pb-2">Identity</h6>
+                        </div>
+
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Username</mat-label>
+                                <input matInput formControlName="username" placeholder="jdoe">
+                                <mat-error *ngIf="form.get('username')?.hasError('required')">Username is
+                                    required</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Password</mat-label>
+                                <input matInput formControlName="password" type="password"
+                                    [placeholder]="isEditMode() ? 'Leave blank to keep unchanged' : 'Required'">
+                                <mat-error *ngIf="form.get('password')?.hasError('required')">Password is
+                                    required</mat-error>
+                                <mat-hint *ngIf="isEditMode()">Leave blank to keep current password</mat-hint>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-md-12">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Employee</mat-label>
+                                <mat-select formControlName="employeeId">
+                                    <mat-option [value]="null">-- None --</mat-option>
+                                    <mat-option *ngFor="let emp of employees" [value]="emp.employeeId">
+                                        {{ emp.firstName }} {{ emp.lastName }} ({{ emp.employeeCode }})
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <!-- Contact Section -->
+                    <div class="row g-3 mt-2">
+                        <div class="col-12">
+                            <h6 class="text-uppercase text-muted small fw-bold mb-3 border-bottom pb-2">Contact</h6>
+                        </div>
+                        <div class="col-md-12">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Email</mat-label>
+                                <input matInput formControlName="email" placeholder="john.doe@example.com">
+                                <mat-error *ngIf="form.get('email')?.hasError('required')">Email is required</mat-error>
+                                <mat-error *ngIf="form.get('email')?.hasError('email')">Invalid email
+                                    address</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <!-- Roles & Permissions Section -->
+                    <div class="row g-3 mt-2">
+                        <div class="col-12">
+                            <h6 class="text-uppercase text-muted small fw-bold mb-3 border-bottom pb-2">Roles &
+                                Permissions</h6>
+                        </div>
+                        <div class="col-12">
+                            <mat-tab-group animationDuration="0ms" class="border rounded p-3">
+                                <!-- Tab 1: Profiles -->
+                                <mat-tab label="Profiles">
+                                    <div class="p-3">
+                                        <div class="d-flex justify-content-end mb-2">
+                                            <button mat-raised-button color="primary" type="button"
+                                                (click)="openProfileDialog()">
+                                                <mat-icon>add</mat-icon> Add Profile
+                                            </button>
+                                        </div>
+
+                                        <table mat-table [dataSource]="selectedProfiles" class="w-100 border">
+                                            <!-- Code Column -->
+                                            <ng-container matColumnDef="code">
+                                                <th mat-header-cell *matHeaderCellDef> Code </th>
+                                                <td mat-cell *matCellDef="let element"> {{element.profileCode}} </td>
+                                            </ng-container>
+
+                                            <!-- Name Column -->
+                                            <ng-container matColumnDef="name">
+                                                <th mat-header-cell *matHeaderCellDef> Name </th>
+                                                <td mat-cell *matCellDef="let element"> {{element.profileName}} </td>
+                                            </ng-container>
+
+                                            <!-- Action Column -->
+                                            <ng-container matColumnDef="actions">
+                                                <th mat-header-cell *matHeaderCellDef> Action </th>
+                                                <td mat-cell *matCellDef="let element">
+                                                    <button mat-icon-button color="warn" type="button"
+                                                        (click)="removeProfile(element)">
+                                                        <mat-icon>delete</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </ng-container>
+
+                                            <tr mat-header-row *matHeaderRowDef="displayedProfileColumns"></tr>
+                                            <tr mat-row *matRowDef="let row; columns: displayedProfileColumns;"></tr>
+                                            <tr class="mat-row" *noDataRow>
+                                                <td class="mat-cell text-center py-3 text-muted"
+                                                    [attr.colspan]="displayedProfileColumns.length">
+                                                    No profiles assigned
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </mat-tab>
+
+                                <!-- Tab 2: Organizations -->
+                                <mat-tab label="Organizations">
+                                    <div class="p-3">
+                                        <div class="d-flex justify-content-end mb-2">
+                                            <button mat-raised-button color="primary" type="button"
+                                                (click)="openOrgDialog()">
+                                                <mat-icon>add</mat-icon> Add Organization
+                                            </button>
+                                        </div>
+
+                                        <table mat-table [dataSource]="selectedOrgs" class="w-100 border">
+                                            <!-- Code Column -->
+                                            <ng-container matColumnDef="code">
+                                                <th mat-header-cell *matHeaderCellDef> Code </th>
+                                                <td mat-cell *matCellDef="let element"> {{element.orgCode}} </td>
+                                            </ng-container>
+
+                                            <!-- Name Column -->
+                                            <ng-container matColumnDef="name">
+                                                <th mat-header-cell *matHeaderCellDef> Name </th>
+                                                <td mat-cell *matCellDef="let element"> {{element.orgName}} </td>
+                                            </ng-container>
+
+                                            <!-- Action Column -->
+                                            <ng-container matColumnDef="actions">
+                                                <th mat-header-cell *matHeaderCellDef> Action </th>
+                                                <td mat-cell *matCellDef="let element">
+                                                    <button mat-icon-button color="warn" type="button"
+                                                        (click)="removeOrg(element)">
+                                                        <mat-icon>delete</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </ng-container>
+
+                                            <tr mat-header-row *matHeaderRowDef="displayedOrgColumns"></tr>
+                                            <tr mat-row *matRowDef="let row; columns: displayedOrgColumns;"></tr>
+                                            <tr class="mat-row" *noDataRow>
+                                                <td class="mat-cell text-center py-3 text-muted"
+                                                    [attr.colspan]="displayedOrgColumns.length">
+                                                    No organizations assigned
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </mat-tab>
+                            </mat-tab-group>
+                        </div>
+                    </div>
+
+                    <!-- Settings Section -->
+                    <div class="row g-3 mt-2">
+                        <div class="col-12">
+                            <h6 class="text-uppercase text-muted small fw-bold mb-3 border-bottom pb-2">Settings</h6>
+                        </div>
+                        <div class="col-12">
+                            <mat-checkbox formControlName="isActive" color="primary">Active Account</mat-checkbox>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Actions -->
+    <div footer class="d-flex justify-content-end gap-2 w-100">
+        <button mat-button routerLink="/su/surt04" color="warn">Cancel</button>
+        <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="form.invalid || isSaving()">
+            <mat-icon *ngIf="!isSaving()">save</mat-icon>
+            <mat-spinner diameter="20" *ngIf="isSaving()" class="d-inline-block me-2"></mat-spinner>
+            {{ isSaving() ? 'Saving...' : 'Save Changes' }}
+        </button>
+    </div>
+</app-card>

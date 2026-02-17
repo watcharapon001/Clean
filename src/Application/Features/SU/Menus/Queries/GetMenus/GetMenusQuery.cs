@@ -41,9 +41,6 @@ public class GetMenusQueryHandler : IRequestHandler<GetMenusQuery, List<MenuDto>
         }
 
         // Get authorized menus
-        // We select the distinct menus and merge permissions if a user has multiple profiles
-        // (Assuming optimistic merging: if one profile allows, it is allowed)
-        
         var authorizedMenus = await _context.ProfileMenus
             .Where(pm => profileIds.Contains(pm.ProfileId) && pm.CanView && pm.Menu.IsActive)
             .Include(pm => pm.Menu)
@@ -68,7 +65,7 @@ public class GetMenusQueryHandler : IRequestHandler<GetMenusQuery, List<MenuDto>
                 Sequence = g.First().Menu.Sequence,
                 ParentMenuId = g.First().Menu.ParentMenuId,
                 
-                // Merge permissions: if any profile grants permission, it's true
+                // Merge permissions
                 CanCreate = g.Any(x => x.CanCreate),
                 CanEdit = g.Any(x => x.CanEdit),
                 CanDelete = g.Any(x => x.CanDelete)

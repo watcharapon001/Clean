@@ -9,5 +9,6 @@ namespace Application.Common.Abstractions;
 public interface IApplicationDbContext : ISystemDbContext, IBusinessDbContext
 {
     DbSet<DbEmployee> DbEmployees { get; }
+    DbSet<SuOrganize> SuOrganizes { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

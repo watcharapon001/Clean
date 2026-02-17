@@ -133,7 +133,7 @@ public static class SeedDataExtensions
         {
             new SuMenu { MenuCode = "DASHBOARD", MenuName = "Dashboard", Route = "/dashboard", Icon = "bi bi-speedometer2", Sequence = 1 },
             new SuMenu { MenuCode = "MANAGEMENT", MenuName = "Management", Sequence = 2 },
-            new SuMenu { MenuCode = "SYSTEM", MenuName = "System Setup", Sequence = 3, Icon = "bi bi-gear" }
+            new SuMenu { MenuCode = "SYSTEM", MenuName = "System Setup", Sequence = 4, Icon = "bi bi-gear" }
         };
 
         foreach (var m in menus)
@@ -162,10 +162,11 @@ public static class SeedDataExtensions
         // Sub Menus
         var subMenus = new List<SuMenu>
         {
-            new SuMenu { MenuCode = "DBRT01", MenuName = "Employees", Route = "/db/dbrt01", Icon = "bi bi-people", Sequence = 1, ParentMenuId = management.MenuId },
-            new SuMenu { MenuCode = "SURT01", MenuName = "Profile Setup", Route = "/su/surt01", Sequence = 1, ParentMenuId = system.MenuId },
-            new SuMenu { MenuCode = "SURT02", MenuName = "Menu Setup", Route = "/su/surt02", Sequence = 2, ParentMenuId = system.MenuId },
-            new SuMenu { MenuCode = "SURT03", MenuName = "Permission Setup", Route = "/su/surt03", Sequence = 3, ParentMenuId = system.MenuId }
+            new SuMenu { MenuCode = "DBRT01", MenuName = "Employees", Route = "/db/dbrt01", Icon = "bi bi-people", Sequence = 3, ParentMenuId = management.MenuId },
+            new SuMenu { MenuCode = "SURT01", MenuName = "Profile Setup", Route = "/su/surt01", Sequence = 5, ParentMenuId = system.MenuId },
+            new SuMenu { MenuCode = "SURT02", MenuName = "Menu Setup", Route = "/su/surt02", Sequence = 5, ParentMenuId = system.MenuId },
+            new SuMenu { MenuCode = "SURT03", MenuName = "Permission Setup", Route = "/su/surt03", Sequence = 5, ParentMenuId = system.MenuId },
+            new SuMenu { MenuCode = "SURT04", MenuName = "User Management", Route = "/su/surt04", Sequence = 5, ParentMenuId = system.MenuId }
         };
 
         foreach (var sm in subMenus)

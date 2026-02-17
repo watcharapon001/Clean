@@ -63,6 +63,8 @@
                                         <mat-form-field appearance="outline" class="w-100">
                                             <mat-label>Last Name</mat-label>
                                             <input matInput formControlName="lastName" placeholder="Doe">
+                                            <mat-error *ngIf="form.get('lastName')?.hasError('required')">Last Name is
+                                                required</mat-error>
                                         </mat-form-field>
                                     </div>
                                 </div>

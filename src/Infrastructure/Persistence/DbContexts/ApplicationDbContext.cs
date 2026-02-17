@@ -40,6 +40,7 @@ public partial class ApplicationDbContext : DbContext, IApplicationDbContext
         return await base.SaveChangesAsync(cancellationToken);
     }
 
+    public DbSet<SuOrganize> SuOrganizes => Set<SuOrganize>();
     public DbSet<DbEmployee> DbEmployees => Set<DbEmployee>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
