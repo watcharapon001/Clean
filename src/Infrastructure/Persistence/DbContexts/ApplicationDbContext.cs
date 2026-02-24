@@ -119,6 +119,7 @@ public partial class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<SuOrganize> SuOrganizes => Set<SuOrganize>();
     public DbSet<DbEmployee> DbEmployees => Set<DbEmployee>();
     public DbSet<SuAuditLog> SuAuditLogs => Set<SuAuditLog>();
+    public DbSet<SuConfig> SuConfigs => Set<SuConfig>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

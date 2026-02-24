@@ -11,5 +11,6 @@ public interface IApplicationDbContext : ISystemDbContext, IBusinessDbContext
     DbSet<DbEmployee> DbEmployees { get; }
     DbSet<SuOrganize> SuOrganizes { get; }
     DbSet<SuAuditLog> SuAuditLogs { get; }
+    DbSet<SuConfig> SuConfigs { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

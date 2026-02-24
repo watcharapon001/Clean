@@ -12,4 +12,5 @@ public partial class ApplicationDbContext
     public DbSet<SuUserProfile> UserProfiles => Set<SuUserProfile>();
     public DbSet<SuMenu> Menus => Set<SuMenu>();
     public DbSet<SuProfileMenu> ProfileMenus => Set<SuProfileMenu>();
+    public DbSet<SuConfig> Configs => Set<SuConfig>();
 }
