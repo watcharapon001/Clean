@@ -28,34 +28,8 @@ export interface SelectionDialogData {
     MatCheckboxModule,
     FormsModule
   ],
-  template: `
-    <h2 mat-dialog-title>{{ data.title }}</h2>
-    <mat-dialog-content>
-      <mat-selection-list #selectionList>
-        <mat-list-option *ngFor="let item of data.items" 
-                         [value]="item"
-                         [disabled]="isDisabled(item)"
-                         [selected]="isDisabled(item)">
-          <div mat-line>{{ item[data.displayField] }}</div>
-          <div mat-line *ngIf="data.subDisplayField" class="text-muted small">
-            {{ item[data.subDisplayField] }}
-          </div>
-        </mat-list-option>
-      </mat-selection-list>
-    </mat-dialog-content>
-    <mat-dialog-actions align="end">
-      <button mat-button mat-dialog-close>Cancel</button>
-      <button mat-raised-button color="primary" (click)="onConfirm()">
-        Select
-      </button>
-    </mat-dialog-actions>
-  `,
-  styles: [`
-    mat-dialog-content {
-      min-width: 300px;
-      max-height: 400px;
-    }
-  `]
+  templateUrl: './selection-list-dialog.component.html',
+  styleUrls: ['./selection-list-dialog.component.scss']
 })
 export class SelectionListDialogComponent {
   @ViewChild('selectionList') selectionList!: any;

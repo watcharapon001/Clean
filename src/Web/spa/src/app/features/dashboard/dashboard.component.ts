@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { DashboardService, DashboardMetrics, RecentAudit } from './dashboard.service';
 import { AppCardComponent } from '../../shared/components/card/card.component';
+import { ActionBarComponent } from '../../shared/components/action-bar/action-bar.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,7 +19,8 @@ import { AppCardComponent } from '../../shared/components/card/card.component';
     MatIconModule, 
     MatButtonModule,
     MatTableModule,
-    AppCardComponent
+    AppCardComponent,
+    ActionBarComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']

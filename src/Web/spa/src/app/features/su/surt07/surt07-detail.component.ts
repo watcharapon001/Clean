@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TextboxComponent, NumberComponent } from '../../../shared/components/inputs';
 import { Surt07Service, SuConfig, UpdateConfigCommand } from './surt07.service';
 
 @Component({
@@ -19,17 +20,16 @@ import { Surt07Service, SuConfig, UpdateConfigCommand } from './surt07.service';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
+    TextboxComponent,
+    NumberComponent
   ],
   template: `
     <h2 mat-dialog-title>Edit Configuration</h2>
     <mat-dialog-content class="py-3">
       <form [formGroup]="configForm" class="d-flex flex-column gap-3">
         
-        <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Configuration Key</mat-label>
-          <input matInput formControlName="configKey" readonly>
-        </mat-form-field>
+        <textbox label="Configuration Key" formControlName="configKey"></textbox>
 
         <p class="text-muted text-sm my-0">{{ data.description }}</p>
 
@@ -46,11 +46,10 @@ import { Surt07Service, SuConfig, UpdateConfigCommand } from './surt07.service';
           </mat-form-field>
 
           <!-- Number Input -->
-          <mat-form-field *ngSwitchCase="'number'" appearance="outline" class="w-100">
-            <mat-label>Value</mat-label>
-            <input matInput type="number" formControlName="configValue" required>
-            <mat-error *ngIf="configForm.get('configValue')?.hasError('required')">Value is required</mat-error>
-          </mat-form-field>
+          <div *ngSwitchCase="'number'" class="w-100 mb-3">
+            <number label="Value" formControlName="configValue"></number>
+          </div>
+
 
           <!-- Default Text Input -->
           <mat-form-field *ngSwitchDefault appearance="outline" class="w-100">

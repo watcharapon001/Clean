@@ -9,6 +9,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AppCardComponent } from '../../../shared/components/card/card.component';
+import { ActionBarComponent } from '../../../shared/components/action-bar/action-bar.component';
 import { Surt06Service, Organize } from './surt06.service';
 import { Surt06DetailComponent } from './surt06-detail.component';
 
@@ -25,7 +26,8 @@ import { Surt06DetailComponent } from './surt06-detail.component';
     MatDialogModule,
     MatSnackBarModule,
     MatTooltipModule,
-    AppCardComponent
+    AppCardComponent,
+    ActionBarComponent
   ],
   templateUrl: './surt06.component.html',
   styleUrls: ['./surt06.component.scss']

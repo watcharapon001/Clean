@@ -1,0 +1,45 @@
+<mat-form-field appearance="outline" class="w-100">
+  <mat-label *ngIf="label">{{ label }}</mat-label>
+  
+  <input type="text"
+         matInput
+         #trigger="matAutocompleteTrigger"
+         [placeholder]="placeholder"
+         [formControl]="searchControl"
+         [matAutocomplete]="auto"
+         (blur)="onBlur()"
+         (focus)="onFocus()"
+         [disabled]="disabled">
+         
+  <!-- Autocomplete Dropdown -->
+  <mat-autocomplete #auto="matAutocomplete" 
+                    [displayWith]="displayFn.bind(this)"
+                    (optionSelected)="onSelectionChange($event.option.value)">
+                    
+    <mat-option *ngIf="showClearOption && value != null && !multiple" [value]="null" class="text-muted fst-italic">
+        -- Select --
+    </mat-option>
+    
+    <ng-container *ngIf="filteredOptions$ | async as items">
+        <mat-option *ngFor="let opt of items" [value]="opt">
+          {{ opt[labelField] }}
+        </mat-option>
+        <mat-option disabled *ngIf="items.length === 0" class="text-center text-muted">
+            No results found
+        </mat-option>
+    </ng-container>
+  </mat-autocomplete>
+
+  <!-- Dropdown Arrow Icon -->
+  <button mat-icon-button matSuffix *ngIf="value == null && !disabled" tabindex="-1" type="button" (click)="openDropdown($event)">
+    <mat-icon class="text-muted">arrow_drop_down</mat-icon>
+  </button>
+
+  <!-- Clear Selection Icon -->
+  <button mat-icon-button matSuffix *ngIf="value != null && !multiple && !disabled" (click)="clearSelection($event)" style="transform: scale(0.8);" type="button" tabindex="-1">
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <mat-hint *ngIf="hint">{{ hint }}</mat-hint>
+  <mat-error *ngIf="ngControl?.invalid">{{ getErrorMessage() }}</mat-error>
+</mat-form-field>

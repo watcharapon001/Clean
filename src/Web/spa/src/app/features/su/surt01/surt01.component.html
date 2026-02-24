@@ -1,9 +1,13 @@
-<app-card title="Profile Management (SURT01)">
-    <div class="d-flex justify-content-end mb-3" actions>
-        <button mat-flat-button color="primary" routerLink="/su/surt01/detail/new">
+<div class="container-fluid py-4">
+
+    <!-- Action Bar -->
+    <app-action-bar>
+        <button mat-raised-button color="primary" routerLink="/su/surt01/detail/new">
             <mat-icon>add</mat-icon> New Profile
         </button>
-    </div>
+    </app-action-bar>
+
+<app-card title="Profile Management (SURT01)">
 
     <div class="card-content">
         <div class="row">
@@ -74,3 +78,4 @@
         </div>
     </div>
 </app-card>
+</div>

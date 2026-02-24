@@ -1,60 +1,50 @@
-<app-card [title]="(isEditMode() ? 'Edit' : 'New') + ' Menu (SURT02)'">
-    <div actions>
-        <button mat-button routerLink="/su/surt02">Back</button>
-    </div>
+<div class="container-fluid py-4">
+
+    <!-- Action Bar -->
+    <app-action-bar backLink="/su/surt02">
+        <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="form.invalid || isSaving()">
+            <mat-icon *ngIf="!isSaving()">save</mat-icon>
+            {{ isSaving() ? 'Saving...' : 'Save Changes' }}
+        </button>
+    </app-action-bar>
+
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <app-card title="Menu Details">
 
     <div class="card-content">
-        <div class="row">
+        <div class="row justify-content-center">
             <div class="col-12">
-                <form [formGroup]="form" (ngSubmit)="onSubmit()" class="d-flex flex-column gap-3">
+                <form [formGroup]="form" (ngSubmit)="onSubmit()" class="d-flex flex-column gap-3 p-3">
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <mat-form-field appearance="outline" class="w-100">
-                                <mat-label>Menu Code</mat-label>
-                                <input matInput formControlName="menuCode" placeholder="Ex. SURT01">
-                                <mat-error *ngIf="form.get('menuCode')?.hasError('required')">Required</mat-error>
-                            </mat-form-field>
+                            <textbox label="Menu Code" formControlName="menuCode" placeholder="Ex. SURT01"></textbox>
                         </div>
 
                         <div class="col-md-6">
-                            <mat-form-field appearance="outline" class="w-100">
-                                <mat-label>Menu Name</mat-label>
-                                <input matInput formControlName="menuName" placeholder="Ex. Profile Setup">
-                                <mat-error *ngIf="form.get('menuName')?.hasError('required')">Required</mat-error>
-                            </mat-form-field>
+                            <textbox label="Menu Name" formControlName="menuName" placeholder="Ex. Profile Setup"></textbox>
                         </div>
 
                         <div class="col-md-6">
-                            <mat-form-field appearance="outline" class="w-100">
-                                <mat-label>Parent Menu</mat-label>
-                                <mat-select formControlName="parentMenuId">
-                                    <mat-option [value]="null">-- None (Root) --</mat-option>
-                                    <mat-option *ngFor="let m of parentMenus" [value]="m.menuId">
-                                        {{m.menuName}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                            <select-input label="Parent Menu"
+                                          formControlName="parentMenuId"
+                                          [options]="parentMenus"
+                                          valueField="menuId"
+                                          labelField="menuName"
+                                          placeholder="-- None (Root) --">
+                            </select-input>
                         </div>
 
                         <div class="col-md-6">
-                            <mat-form-field appearance="outline" class="w-100">
-                                <mat-label>Sequence</mat-label>
-                                <input matInput type="number" formControlName="sequence">
-                            </mat-form-field>
+                            <number label="Sequence" formControlName="sequence"></number>
                         </div>
 
                         <div class="col-md-6">
-                            <mat-form-field appearance="outline" class="w-100">
-                                <mat-label>Route</mat-label>
-                                <input matInput formControlName="route" placeholder="Ex. /su/surt01">
-                            </mat-form-field>
+                            <textbox label="Route" formControlName="route" placeholder="Ex. /su/surt01"></textbox>
                         </div>
 
                         <div class="col-md-6">
-                            <mat-form-field appearance="outline" class="w-100">
-                                <mat-label>Icon (Bootstrap Icons)</mat-label>
-                                <input matInput formControlName="icon" placeholder="Ex. bi bi-person">
-                            </mat-form-field>
+                            <textbox label="Icon (Bootstrap Icons)" formControlName="icon" placeholder="Ex. bi bi-person"></textbox>
                         </div>
 
                         <div class="col-12">
@@ -62,14 +52,11 @@
                         </div>
                     </div>
 
-                    <div class="d-flex justify-content-end pt-3 border-top">
-                        <button mat-button type="button" routerLink="/su/surt02" class="me-2">Cancel</button>
-                        <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || isSaving()">
-                            {{ isSaving() ? 'Saving...' : 'Save' }}
-                        </button>
-                    </div>
                 </form>
             </div>
         </div>
     </div>
 </app-card>
+        </div>
+    </div>
+</div>

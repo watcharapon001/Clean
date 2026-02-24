@@ -1,31 +1,28 @@
-<app-card [title]="(isEditMode() ? 'Edit' : 'New') + ' Profile (SURT01)'">
-    <div actions>
-        <button mat-button routerLink="/su/surt01">Back</button>
-    </div>
+<div class="container-fluid py-4">
+
+    <!-- Action Bar -->
+    <app-action-bar backLink="/su/surt01">
+        <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="form.invalid || isSaving()">
+            <mat-icon *ngIf="!isSaving()">save</mat-icon>
+            {{ isSaving() ? 'Saving...' : 'Save Changes' }}
+        </button>
+    </app-action-bar>
+
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <app-card title="Profile Details">
 
     <div class="card-content">
-        <div class="row">
+        <div class="row justify-content-center">
             <div class="col-12">
-                <form [formGroup]="form" (ngSubmit)="onSubmit()" class="d-flex flex-column gap-3">
+                <form [formGroup]="form" (ngSubmit)="onSubmit()" class="d-flex flex-column gap-3 p-3">
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <mat-form-field appearance="outline" class="w-100">
-                                <mat-label>Profile Code</mat-label>
-                                <input matInput formControlName="profileCode" placeholder="Ex. ADMIN">
-                                <mat-error *ngIf="form.get('profileCode')?.hasError('required')">
-                                    Profile Code is required
-                                </mat-error>
-                            </mat-form-field>
+                            <textbox label="Profile Code" formControlName="profileCode" placeholder="Ex. ADMIN"></textbox>
                         </div>
 
                         <div class="col-md-6">
-                            <mat-form-field appearance="outline" class="w-100">
-                                <mat-label>Profile Name</mat-label>
-                                <input matInput formControlName="profileName" placeholder="Ex. Administrator">
-                                <mat-error *ngIf="form.get('profileName')?.hasError('required')">
-                                    Profile Name is required
-                                </mat-error>
-                            </mat-form-field>
+                            <textbox label="Profile Name" formControlName="profileName" placeholder="Ex. Administrator"></textbox>
                         </div>
 
                         <div class="col-12">
@@ -39,15 +36,11 @@
                             <mat-checkbox formControlName="isActive" color="primary">Active</mat-checkbox>
                         </div>
                     </div>
-
-                    <div class="d-flex justify-content-end pt-3 border-top">
-                        <button mat-button type="button" routerLink="/su/surt01" class="me-2">Cancel</button>
-                        <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || isSaving()">
-                            {{ isSaving() ? 'Saving...' : 'Save' }}
-                        </button>
-                    </div>
                 </form>
             </div>
         </div>
     </div>
 </app-card>
+        </div>
+    </div>
+</div>

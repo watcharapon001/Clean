@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AppCardComponent } from '../../../shared/components/card/card.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { ActionBarComponent } from '../../../shared/components/action-bar/action-bar.component';
 import { Surt01Service } from './surt01.service';
 
 export interface Profile {
@@ -33,6 +34,7 @@ export interface Profile {
     MatIconModule,
     MatDialogModule,
     AppCardComponent,
+    ActionBarComponent
   ],
   templateUrl: './surt01.component.html',
   styleUrl: './surt01.component.scss',

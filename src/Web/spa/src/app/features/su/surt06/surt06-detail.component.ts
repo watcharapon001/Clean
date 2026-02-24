@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TextboxComponent } from '../../../shared/components/inputs';
 import { Surt06Service, Organize, CreateOrganizeCommand, UpdateOrganizeCommand } from './surt06.service';
 
 @Component({
@@ -19,24 +20,17 @@ import { Surt06Service, Organize, CreateOrganizeCommand, UpdateOrganizeCommand }
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
+    TextboxComponent
   ],
   template: `
     <h2 mat-dialog-title>{{ isEditMode ? 'Edit Organization' : 'Create Organization' }}</h2>
     <mat-dialog-content class="py-3">
       <form [formGroup]="orgForm" class="d-flex flex-column gap-3">
         
-        <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Organization Code</mat-label>
-          <input matInput formControlName="orgCode" placeholder="Ex. ORG03" required>
-          <mat-error *ngIf="orgForm.get('orgCode')?.hasError('required')">Code is required</mat-error>
-        </mat-form-field>
+        <textbox label="Organization Code" formControlName="orgCode" placeholder="Ex. ORG03"></textbox>
 
-        <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Organization Name</mat-label>
-          <input matInput formControlName="orgName" placeholder="Ex. IT Department" required>
-          <mat-error *ngIf="orgForm.get('orgName')?.hasError('required')">Name is required</mat-error>
-        </mat-form-field>
+        <textbox label="Organization Name" formControlName="orgName" placeholder="Ex. IT Department"></textbox>
 
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Status</mat-label>

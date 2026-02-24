@@ -9,13 +9,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AppCardComponent } from '../../../shared/components/card/card.component';
 import { SelectionListDialogComponent } from '../../../shared/components/selection-list-dialog/selection-list-dialog.component';
+import { ActionBarComponent } from '../../../shared/components/action-bar/action-bar.component';
+import { TextboxComponent, SelectInputComponent } from '../../../shared/components/inputs';
 import { Surt04Service, Employee, Organization, UserOrg } from './surt04.service';
 import { Surt01Service } from '../surt01/surt01.service';
 import { Profile } from '../surt01/surt01.component';
@@ -32,12 +33,14 @@ import { Profile } from '../surt01/surt01.component';
     MatCheckboxModule,
     MatCardModule,
     MatIconModule,
-    MatSelectModule,
     MatProgressSpinnerModule,
     MatTabsModule,
     MatTableModule,
     MatDialogModule,
-    AppCardComponent
+    AppCardComponent,
+    ActionBarComponent,
+    TextboxComponent,
+    SelectInputComponent
   ],
   templateUrl: './surt04-detail.component.html',
   styleUrl: './surt04-detail.component.scss'

@@ -1,20 +1,11 @@
 <div class="container-fluid py-4">
-    <!-- Header Section -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h2 class="mb-1 text-slate-800">Employees</h2>
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="#" class="text-decoration-none text-muted">Dashboard</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Employees</li>
-                </ol>
-            </nav>
-        </div>
+    <!-- Action Bar -->
+    <app-action-bar>
         <a routerLink="/db/dbrt01/detail/new" mat-raised-button color="primary" class="d-flex align-items-center gap-2">
             <mat-icon>add</mat-icon>
             Add Employee
         </a>
-    </div>
+    </app-action-bar>
 
     <app-card>
         <div class="card-content">
@@ -89,7 +80,7 @@
                             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
                             <!-- Row shown when there is no matching data. -->
-                            <tr class="mat-row" *noDataRow>
+                            <tr class="mat-row" *matNoDataRow>
                                 <td class="mat-cell text-center py-5" colspan="5">
                                     <div class="text-muted mb-2"><mat-icon class="fs-1"
                                             style="width: 48px; height: 48px; font-size: 48px;">people</mat-icon></div>

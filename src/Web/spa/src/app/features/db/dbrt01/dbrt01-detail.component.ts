@@ -14,6 +14,8 @@ import { finalize } from 'rxjs/operators';
 import { Dbrt01Service, Dbrt01 } from './dbrt01.service';
 import { LoadingService } from '../../../core/services/loading.service';
 import { AppCardComponent } from '../../../shared/components/card/card.component';
+import { ActionBarComponent } from '../../../shared/components/action-bar/action-bar.component';
+import { TextboxComponent } from '../../../shared/components/inputs';
 
 @Component({
   selector: 'app-dbrt01-detail',
@@ -29,7 +31,9 @@ import { AppCardComponent } from '../../../shared/components/card/card.component
     MatCardModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    AppCardComponent
+    AppCardComponent,
+    ActionBarComponent,
+    TextboxComponent
   ],
   templateUrl: './dbrt01-detail.component.html',
   styleUrls: ['./dbrt01-detail.component.scss']
