@@ -90,7 +90,7 @@ if (app.Environment.IsDevelopment())
 
     // Seed development data
     //await app.Services.SeedDevelopmentDataAsync();
-}
+    }
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAngularDev");

@@ -24,24 +24,31 @@ export interface Profile {
   selector: 'app-surt01',
   standalone: true,
   imports: [
-    CommonModule, 
-    RouterModule, 
-    MatTableModule, 
-    MatPaginatorModule, 
-    MatSortModule, 
-    MatButtonModule, 
+    CommonModule,
+    RouterModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatButtonModule,
     MatIconModule,
     MatDialogModule,
-    AppCardComponent
+    AppCardComponent,
   ],
   templateUrl: './surt01.component.html',
-  styleUrl: './surt01.component.scss'
+  styleUrl: './surt01.component.scss',
 })
 export class Surt01Component implements OnInit {
   private service = inject(Surt01Service);
   private dialog = inject(MatDialog);
-  
-  displayedColumns: string[] = ['index', 'profileCode', 'profileName', 'description', 'status', 'actions'];
+
+  displayedColumns: string[] = [
+    'index',
+    'profileCode',
+    'profileName',
+    'description',
+    'status',
+    'actions',
+  ];
   dataSource = new MatTableDataSource<Profile>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -52,7 +59,7 @@ export class Surt01Component implements OnInit {
   }
 
   loadProfiles() {
-    this.service.getProfiles().subscribe(data => {
+    this.service.getProfiles().subscribe((data) => {
       this.dataSource.data = data;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -64,11 +71,11 @@ export class Surt01Component implements OnInit {
       width: '400px',
       data: {
         title: 'Confirm Delete',
-        message: `Are you sure you want to delete <strong>${profile.profileName}</strong>?`
-      }
+        message: `Are you sure you want to delete <strong>${profile.profileName}</strong>?`,
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
         this.service.deleteProfile(profile.profileId).subscribe(() => {
           this.loadProfiles();

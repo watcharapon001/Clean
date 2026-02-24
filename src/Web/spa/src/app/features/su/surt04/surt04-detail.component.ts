@@ -157,7 +157,7 @@ export class Surt04DetailComponent implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result: any) => {
         if (result && result.length > 0) {
             // Robust deduplication using Map
             const merged = [...this.selectedProfiles, ...result];
@@ -196,7 +196,7 @@ export class Surt04DetailComponent implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result: any) => {
         if (result && result.length > 0) {
             // Robust deduplication using Map
             const merged = [...this.selectedOrgs, ...result];
