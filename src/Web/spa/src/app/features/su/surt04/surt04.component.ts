@@ -59,7 +59,7 @@ export class Surt04Component implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
         this.service.deleteUser(user.userId).subscribe(() => {
           this.loadUsers();

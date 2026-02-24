@@ -83,7 +83,7 @@ export class Surt03Component implements OnInit {
     
     // Filter only permissions that have at least one true value (optimization)
     // OR send all. Let's send only relevant ones.
-    const permissions = this.dataSource.data.map(p => ({
+    const permissions = this.dataSource.data.map((p: any) => ({
         menuId: p.menuId,
         canView: p.canView,
         canCreate: p.canCreate,

@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Persistence.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260222065325_UpdateProductSchema")]
+    partial class UpdateProductSchema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,52 +105,6 @@ namespace Infrastructure.Persistence.Migrations
                         .HasDatabaseName("ix_db_employee_org_id_employee_code");
 
                     b.ToTable("db_employee", "clean");
-                });
-
-            modelBuilder.Entity("Domain.Entities.SU.SuAuditLog", b =>
-                {
-                    b.Property<Guid>("AuditLogId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("audit_log_id");
-
-                    b.Property<string>("Action")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasColumnName("action");
-
-                    b.Property<string>("KeyValues")
-                        .HasColumnType("text")
-                        .HasColumnName("key_values");
-
-                    b.Property<string>("NewValues")
-                        .HasColumnType("text")
-                        .HasColumnName("new_values");
-
-                    b.Property<string>("OldValues")
-                        .HasColumnType("text")
-                        .HasColumnName("old_values");
-
-                    b.Property<string>("TableName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
-                        .HasColumnName("table_name");
-
-                    b.Property<DateTimeOffset>("Timestamp")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("timestamp");
-
-                    b.Property<string>("UserId")
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("AuditLogId")
-                        .HasName("pk_su_audit_log");
-
-                    b.ToTable("su_audit_log", "clean");
                 });
 
             modelBuilder.Entity("Domain.Entities.SU.SuMenu", b =>

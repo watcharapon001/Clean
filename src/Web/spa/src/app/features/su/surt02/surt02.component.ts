@@ -72,7 +72,7 @@ export class Surt02Component implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
         this.service.deleteMenu(menu.menuId).subscribe(() => {
           this.loadMenus();

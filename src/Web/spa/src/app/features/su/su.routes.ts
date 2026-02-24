@@ -50,5 +50,10 @@ export const SU_ROUTES: Routes = [
     path: 'surt04/detail/:id',
     loadComponent: () => import('./surt04/surt04-detail.component').then(m => m.Surt04DetailComponent),
     data: { programCode: 'SURT04' }
+  },
+  {
+    path: 'surt05',
+    loadComponent: () => import('./surt05/surt05.component').then(m => m.Surt05Component),
+    data: { programCode: 'SURT05' }
   }
 ];
