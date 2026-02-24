@@ -12,6 +12,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Dbrt01Service, Dbrt01 } from './dbrt01.service';
 import { AppCardComponent } from '../../../shared/components/card/card.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { ActionBarComponent } from '../../../shared/components/action-bar/action-bar.component';
 
 @Component({
   selector: 'app-dbrt01',
@@ -26,7 +27,8 @@ import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialo
     MatIconModule,
     MatChipsModule,
     MatDialogModule,
-    AppCardComponent
+    AppCardComponent,
+    ActionBarComponent
   ],
   templateUrl: './dbrt01.component.html',
   styleUrls: ['./dbrt01.component.scss']

@@ -167,7 +167,9 @@ public static class SeedDataExtensions
             new SuMenu { MenuCode = "SURT02", MenuName = "Menu Setup", Route = "/su/surt02", Sequence = 5, ParentMenuId = system.MenuId },
             new SuMenu { MenuCode = "SURT03", MenuName = "Permission Setup", Route = "/su/surt03", Sequence = 5, ParentMenuId = system.MenuId },
             new SuMenu { MenuCode = "SURT04", MenuName = "User Management", Route = "/su/surt04", Sequence = 5, ParentMenuId = system.MenuId },
-            new SuMenu { MenuCode = "SURT05", MenuName = "Audit Trails", Route = "/su/surt05", Sequence = 6, ParentMenuId = system.MenuId }
+            new SuMenu { MenuCode = "SURT05", MenuName = "Audit Trails", Route = "/su/surt05", Sequence = 6, ParentMenuId = system.MenuId },
+            new SuMenu { MenuCode = "SURT06", MenuName = "Organization Setup", Route = "/su/surt06", Sequence = 7, ParentMenuId = system.MenuId },
+            new SuMenu { MenuCode = "SURT07", MenuName = "System Configs", Route = "/su/surt07", Sequence = 8, ParentMenuId = system.MenuId }
         };
 
         foreach (var sm in subMenus)
@@ -213,6 +215,19 @@ public static class SeedDataExtensions
             await db.SaveChangesAsync();
         }
 
+
+        // 8. System Configs (SuConfig)
+        if (!await db.Configs.AnyAsync())
+        {
+            var configs = new List<SuConfig>
+            {
+                new SuConfig { ConfigKey = "MAX_UPLOAD_MB", ConfigValue = "10", Description = "Maximum allowed file upload size in MB", DataType = "number" },
+                new SuConfig { ConfigKey = "ALLOW_GUEST_REGISTRATION", ConfigValue = "false", Description = "Allow new users to register themselves", DataType = "boolean" },
+                new SuConfig { ConfigKey = "SYSTEM_NOTICE", ConfigValue = "", Description = "Global message displayed on the login page", DataType = "text" }
+            };
+            await db.Configs.AddRangeAsync(configs);
+            await db.SaveChangesAsync();
+        }
 
         logger.LogInformation("Development seed data created successfully.");
     }

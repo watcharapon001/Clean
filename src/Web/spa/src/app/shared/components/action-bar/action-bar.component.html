@@ -1,0 +1,16 @@
+<div class="d-flex justify-content-between align-items-center py-2 mb-4 bg-white border-bottom" 
+     style="margin-left: -1.5rem; margin-right: -1.5rem; padding-left: 1.5rem; padding-right: 1.5rem; margin-top: -1.5rem;">
+    <div>
+        <a *ngIf="backLink" mat-button [routerLink]="backLink">
+            <mat-icon>arrow_back</mat-icon>
+            {{ backText }}
+        </a>
+        <button *ngIf="showBackButton && !backLink" mat-button (click)="goBack()">
+            <mat-icon>arrow_back</mat-icon>
+            {{ backText }}
+        </button>
+    </div>
+    <div class="d-flex gap-2 align-items-center">
+        <ng-content></ng-content>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+/* Ensure the search bar stays on top when scrolling the mat-select panel */
+::ng-deep .mat-mdc-select-panel {
+    max-height: 400px; 
+}
+
+/* Make search text visible */
+input.text-dark {
+    color: #212529 !important;
+}
+
+/* Hide the default mat-select arrow when there's a selected value (handled by a host class) */
+:host.has-value ::ng-deep .mat-mdc-select-arrow-wrapper {
+    display: none !important;
+}

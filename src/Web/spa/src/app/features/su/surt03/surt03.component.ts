@@ -10,7 +10,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AppCardComponent } from '../../../shared/components/card/card.component';
+import { ActionBarComponent } from '../../../shared/components/action-bar/action-bar.component';
+import { SelectInputComponent } from '../../../shared/components/inputs';
 import { Profile } from '../surt01/surt01.component';
 import { Surt03Service } from './surt03.service';
 
@@ -37,11 +40,13 @@ export interface MenuPermission {
     MatTableModule, 
     MatButtonModule, 
     MatCheckboxModule, 
-    MatSelectModule,
     MatFormFieldModule,
     MatIconModule,
     MatSnackBarModule,
-    AppCardComponent
+    MatProgressSpinnerModule,
+    AppCardComponent,
+    ActionBarComponent,
+    SelectInputComponent
   ],
   templateUrl: './surt03.component.html',
   styleUrl: './surt03.component.scss'

@@ -5,8 +5,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
-import { Dbrt01Service, Dbrt01 } from '../db/dbrt01/dbrt01.service';
+import { DashboardService, DashboardMetrics, RecentAudit } from './dashboard.service';
 import { AppCardComponent } from '../../shared/components/card/card.component';
+import { ActionBarComponent } from '../../shared/components/action-bar/action-bar.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,34 +19,34 @@ import { AppCardComponent } from '../../shared/components/card/card.component';
     MatIconModule, 
     MatButtonModule,
     MatTableModule,
-    AppCardComponent
+    AppCardComponent,
+    ActionBarComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  private dbrt01Service = inject(Dbrt01Service);
+  private dashboardService = inject(DashboardService);
 
-  totalEmployees = signal(0);
-  activeEmployees = signal(0);
-  inactiveEmployees = signal(0);
-  recentEmployees = signal<Dbrt01[]>([]);
+  totalUsers = signal(0);
+  totalOrganizes = signal(0);
+  totalProfiles = signal(0);
+  totalMenus = signal(0);
+  recentAudits = signal<RecentAudit[]>([]);
 
-  displayedColumns: string[] = ['name', 'department', 'status']; // Simplified columns for dashboard
+  displayedColumns: string[] = ['timestamp', 'action', 'tableName'];
 
   ngOnInit() {
     this.loadDashboardData();
   }
 
   loadDashboardData() {
-    this.dbrt01Service.getDbrt01s().subscribe(employees => {
-      this.totalEmployees.set(employees.length);
-      this.activeEmployees.set(employees.filter(e => e.isActive).length);
-      this.inactiveEmployees.set(employees.length - this.activeEmployees());
-      
-      // Get last 5 employees (assuming API returns in some order, or we slice the end)
-      // For now, let's just take the last 5 if the array is populated
-      this.recentEmployees.set(employees.slice(-5).reverse());
+    this.dashboardService.getMetrics().subscribe(metrics => {
+      this.totalUsers.set(metrics.totalUsers);
+      this.totalOrganizes.set(metrics.totalOrganizes);
+      this.totalProfiles.set(metrics.totalProfiles);
+      this.totalMenus.set(metrics.totalMenus);
+      this.recentAudits.set(metrics.recentAudits);
     });
   }
 }

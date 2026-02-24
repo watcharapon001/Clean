@@ -150,6 +150,48 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("su_audit_log", "clean");
                 });
 
+            modelBuilder.Entity("Domain.Entities.SU.SuConfig", b =>
+                {
+                    b.Property<string>("ConfigKey")
+                        .HasColumnType("text")
+                        .HasColumnName("config_key");
+
+                    b.Property<string>("ConfigValue")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("config_value");
+
+                    b.Property<string>("CreateBy")
+                        .HasColumnType("text")
+                        .HasColumnName("cr_by");
+
+                    b.Property<DateTimeOffset>("CreateDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("cr_date");
+
+                    b.Property<string>("DataType")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("data_type");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<string>("UpdateBy")
+                        .HasColumnType("text")
+                        .HasColumnName("upd_by");
+
+                    b.Property<DateTimeOffset?>("UpdateDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("upd_date");
+
+                    b.HasKey("ConfigKey")
+                        .HasName("pk_su_config");
+
+                    b.ToTable("su_config", "clean");
+                });
+
             modelBuilder.Entity("Domain.Entities.SU.SuMenu", b =>
                 {
                     b.Property<Guid>("MenuId")

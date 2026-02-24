@@ -1,25 +1,18 @@
 <div class="container-fluid py-4">
-    <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h2 class="mb-1 text-slate-800">{{ isEditMode() ? 'Edit' : 'Add' }} Employee</h2>
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a routerLink="/db/dbrt01"
-                            class="text-decoration-none text-muted">Employees</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ isEditMode() ? 'Edit' : 'New' }}</li>
-                </ol>
-            </nav>
-        </div>
-        <a routerLink="/db/dbrt01" mat-stroked-button color="basic">
-            <mat-icon>arrow_back</mat-icon>
-            Back to List
-        </a>
-    </div>
+
+
+    <!-- Action Bar -->
+    <app-action-bar backLink="/db/dbrt01">
+        <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="form.invalid || isLoading()">
+            <mat-icon *ngIf="!isLoading()">save</mat-icon>
+            <mat-spinner diameter="20" *ngIf="isLoading()" class="d-inline-block me-2"></mat-spinner>
+            {{ isLoading() ? 'Saving...' : 'Save Changes' }}
+        </button>
+    </app-action-bar>
 
     <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <app-card [title]="(isEditMode() ? 'Edit' : 'New') + ' Employee Details'" [showFooter]="true">
+        <div class="col-12">
+            <app-card [title]="(isEditMode() ? 'Edit' : 'New') + ' Employee Details'">
 
                 <div class="card-content">
                     <div class="row">
@@ -35,37 +28,19 @@
                                     </div>
 
                                     <div class="col-md-4">
-                                        <mat-form-field appearance="outline" class="w-100">
-                                            <mat-label>Employee Code</mat-label>
-                                            <input matInput formControlName="employeeCode" placeholder="EMP-001">
-                                            <mat-error *ngIf="form.get('employeeCode')?.hasError('required')">Code is
-                                                required</mat-error>
-                                        </mat-form-field>
+                                        <textbox label="Employee Code" formControlName="employeeCode" placeholder="EMP-001"></textbox>
                                     </div>
 
                                     <div class="col-md-8">
-                                        <mat-form-field appearance="outline" class="w-100">
-                                            <mat-label>Display Name</mat-label>
-                                            <input matInput formControlName="displayName" placeholder="John Doe">
-                                        </mat-form-field>
+                                        <textbox label="Display Name" formControlName="displayName" placeholder="John Doe"></textbox>
                                     </div>
 
                                     <div class="col-md-6">
-                                        <mat-form-field appearance="outline" class="w-100">
-                                            <mat-label>First Name</mat-label>
-                                            <input matInput formControlName="firstName" placeholder="John">
-                                            <mat-error *ngIf="form.get('firstName')?.hasError('required')">First Name is
-                                                required</mat-error>
-                                        </mat-form-field>
+                                        <textbox label="First Name" formControlName="firstName" placeholder="John"></textbox>
                                     </div>
 
                                     <div class="col-md-6">
-                                        <mat-form-field appearance="outline" class="w-100">
-                                            <mat-label>Last Name</mat-label>
-                                            <input matInput formControlName="lastName" placeholder="Doe">
-                                            <mat-error *ngIf="form.get('lastName')?.hasError('required')">Last Name is
-                                                required</mat-error>
-                                        </mat-form-field>
+                                        <textbox label="Last Name" formControlName="lastName" placeholder="Doe"></textbox>
                                     </div>
                                 </div>
 
@@ -78,22 +53,11 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <mat-form-field appearance="outline" class="w-100">
-                                            <mat-label>Email</mat-label>
-                                            <input matInput type="email" formControlName="email"
-                                                placeholder="john.doe@example.com">
-                                            <mat-icon matSuffix>email</mat-icon>
-                                            <mat-error *ngIf="form.get('email')?.hasError('email')">Invalid email
-                                                address</mat-error>
-                                        </mat-form-field>
+                                        <textbox label="Email" formControlName="email" type="email" placeholder="john.doe@example.com"></textbox>
                                     </div>
 
                                     <div class="col-md-6">
-                                        <mat-form-field appearance="outline" class="w-100">
-                                            <mat-label>Phone</mat-label>
-                                            <input matInput formControlName="phone" placeholder="+1 (555) 000-0000">
-                                            <mat-icon matSuffix>phone</mat-icon>
-                                        </mat-form-field>
+                                        <textbox label="Phone" formControlName="phone" placeholder="+1 (555) 000-0000"></textbox>
                                     </div>
                                 </div>
 
@@ -118,17 +82,6 @@
                             </form>
                         </div>
                     </div>
-                </div>
-
-                <!-- Footer Actions -->
-                <div footer class="d-flex justify-content-end gap-2 w-100">
-                    <a mat-button routerLink="/db/dbrt01" color="warn">Cancel</a>
-                    <button mat-raised-button color="primary" (click)="onSubmit()"
-                        [disabled]="form.invalid || isLoading()">
-                        <mat-icon *ngIf="!isLoading()">save</mat-icon>
-                        <mat-spinner diameter="20" *ngIf="isLoading()" class="d-inline-block me-2"></mat-spinner>
-                        {{ isLoading() ? 'Saving...' : 'Save Changes' }}
-                    </button>
                 </div>
 
             </app-card>

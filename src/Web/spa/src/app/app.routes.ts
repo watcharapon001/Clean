@@ -20,6 +20,11 @@ export const routes: Routes = [
         loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent),
         data: { programCode: 'DBRT00' }
       },
+      {
+        path: 'demo',
+        loadComponent: () => import('./features/demo/demo.component').then(m => m.DemoComponent),
+        title: 'Component Demo'
+      },
       
       // DB Module (DBRT01)
       { 

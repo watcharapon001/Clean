@@ -9,8 +9,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSelectModule } from '@angular/material/select';
 import { AppCardComponent } from '../../../shared/components/card/card.component';
+import { ActionBarComponent } from '../../../shared/components/action-bar/action-bar.component';
+import { TextboxComponent, NumberComponent, SelectInputComponent } from '../../../shared/components/inputs';
 import { Menu } from './surt02.component';
 import { Surt02Service } from './surt02.service';
 
@@ -26,8 +27,11 @@ import { Surt02Service } from './surt02.service';
     MatCheckboxModule,
     MatCardModule,
     MatIconModule,
-    MatSelectModule,
-    AppCardComponent
+    AppCardComponent,
+    ActionBarComponent,
+    TextboxComponent,
+    NumberComponent,
+    SelectInputComponent
   ],
   templateUrl: './surt02-detail.component.html',
   styleUrl: './surt02-detail.component.scss'

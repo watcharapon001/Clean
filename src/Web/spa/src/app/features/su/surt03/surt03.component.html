@@ -1,25 +1,32 @@
-<app-card title="Permission Management (SURT03)">
+<div class="container-fluid py-4">
 
-    <div class="card-content">
+    <!-- Action Bar -->
+    <app-action-bar backLink="/su">
+        <button mat-raised-button color="primary" (click)="savePermissions()" [disabled]="!selectedProfileId || isSaving()">
+            <mat-icon *ngIf="!isSaving()">save</mat-icon>
+            <mat-spinner diameter="20" *ngIf="isSaving()" class="d-inline-block me-2"></mat-spinner>
+            {{ isSaving() ? 'Saving...' : 'Save Permissions' }}
+        </button>
+    </app-action-bar>
+
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <app-card>
+
+    <div class="card-content p-3 h-100 d-flex flex-column gap-3">
         <div class="row">
             <div class="col-12">
                 <!-- Profile Selection -->
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <mat-form-field appearance="outline" class="w-100">
-                            <mat-label>Select Profile</mat-label>
-                            <mat-select [(ngModel)]="selectedProfileId" (selectionChange)="loadPermissions()">
-                                <mat-option *ngFor="let p of profiles" [value]="p.profileId">
-                                    {{p.profileName}} ({{p.profileCode}})
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                    <div class="col-md-6 d-flex align-items-center mt-2 mt-md-0">
-                        <button mat-flat-button color="primary" (click)="savePermissions()"
-                            [disabled]="!selectedProfileId || isSaving()">
-                            <mat-icon>save</mat-icon> {{ isSaving() ? 'Saving...' : 'Save Permissions' }}
-                        </button>
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <select-input label="Select Profile"
+                                      [(ngModel)]="selectedProfileId"
+                                      (ngModelChange)="loadPermissions()"
+                                      [options]="profiles"
+                                      valueField="profileId"
+                                      labelField="profileName"
+                                      placeholder="Ex. Admin">
+                        </select-input>
                     </div>
                 </div>
 
@@ -89,5 +96,7 @@
             </div>
         </div>
     </div>
-
 </app-card>
+        </div>
+    </div>
+</div>

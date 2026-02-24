@@ -1,11 +1,21 @@
-<app-card [title]="(isEditMode() ? 'Edit' : 'New') + ' User (SURT04)'" [showFooter]="true">
-    <div actions>
-        <button mat-button routerLink="/su/surt04">Back</button>
-    </div>
+<div class="container-fluid py-4">
+
+    <!-- Action Bar -->
+    <app-action-bar backLink="/su/surt04">
+        <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="form.invalid || isSaving()">
+            <mat-icon *ngIf="!isSaving()">save</mat-icon>
+            <mat-spinner diameter="20" *ngIf="isSaving()" class="d-inline-block me-2"></mat-spinner>
+            {{ isSaving() ? 'Saving...' : 'Save Changes' }}
+        </button>
+    </app-action-bar>
+
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <app-card title="User Details">
 
     <div class="card-content">
         <div class="row justify-content-center">
-            <div class="col-lg-8">
+            <div class="col-12">
                 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="d-flex flex-column gap-3 p-3">
 
                     <!-- Identity Section -->
@@ -15,35 +25,24 @@
                         </div>
 
                         <div class="col-md-6">
-                            <mat-form-field appearance="outline" class="w-100">
-                                <mat-label>Username</mat-label>
-                                <input matInput formControlName="username" placeholder="jdoe">
-                                <mat-error *ngIf="form.get('username')?.hasError('required')">Username is
-                                    required</mat-error>
-                            </mat-form-field>
+                            <textbox label="Username" formControlName="username" placeholder="jdoe"></textbox>
                         </div>
 
                         <div class="col-md-6">
-                            <mat-form-field appearance="outline" class="w-100">
-                                <mat-label>Password</mat-label>
-                                <input matInput formControlName="password" type="password"
-                                    [placeholder]="isEditMode() ? 'Leave blank to keep unchanged' : 'Required'">
-                                <mat-error *ngIf="form.get('password')?.hasError('required')">Password is
-                                    required</mat-error>
-                                <mat-hint *ngIf="isEditMode()">Leave blank to keep current password</mat-hint>
-                            </mat-form-field>
+                            <textbox label="Password" formControlName="password" type="password"
+                                [placeholder]="isEditMode() ? 'Leave blank to keep unchanged' : 'Required'"
+                                [hint]="isEditMode() ? 'Leave blank to keep current password' : ''">
+                            </textbox>
                         </div>
 
                         <div class="col-md-12">
-                            <mat-form-field appearance="outline" class="w-100">
-                                <mat-label>Employee</mat-label>
-                                <mat-select formControlName="employeeId">
-                                    <mat-option [value]="null">-- None --</mat-option>
-                                    <mat-option *ngFor="let emp of employees" [value]="emp.employeeId">
-                                        {{ emp.firstName }} {{ emp.lastName }} ({{ emp.employeeCode }})
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                            <select-input label="Employee"
+                                          formControlName="employeeId"
+                                          [options]="employees"
+                                          valueField="employeeId"
+                                          labelField="firstName"
+                                          placeholder="-- None --">
+                            </select-input>
                         </div>
                     </div>
 
@@ -53,13 +52,7 @@
                             <h6 class="text-uppercase text-muted small fw-bold mb-3 border-bottom pb-2">Contact</h6>
                         </div>
                         <div class="col-md-12">
-                            <mat-form-field appearance="outline" class="w-100">
-                                <mat-label>Email</mat-label>
-                                <input matInput formControlName="email" placeholder="john.doe@example.com">
-                                <mat-error *ngIf="form.get('email')?.hasError('required')">Email is required</mat-error>
-                                <mat-error *ngIf="form.get('email')?.hasError('email')">Invalid email
-                                    address</mat-error>
-                            </mat-form-field>
+                            <textbox label="Email" formControlName="email" placeholder="john.doe@example.com"></textbox>
                         </div>
                     </div>
 
@@ -107,7 +100,7 @@
 
                                             <tr mat-header-row *matHeaderRowDef="displayedProfileColumns"></tr>
                                             <tr mat-row *matRowDef="let row; columns: displayedProfileColumns;"></tr>
-                                            <tr class="mat-row" *noDataRow>
+                                            <tr class="mat-row" *matNoDataRow>
                                                 <td class="mat-cell text-center py-3 text-muted"
                                                     [attr.colspan]="displayedProfileColumns.length">
                                                     No profiles assigned
@@ -153,7 +146,7 @@
 
                                             <tr mat-header-row *matHeaderRowDef="displayedOrgColumns"></tr>
                                             <tr mat-row *matRowDef="let row; columns: displayedOrgColumns;"></tr>
-                                            <tr class="mat-row" *noDataRow>
+                                            <tr class="mat-row" *matNoDataRow>
                                                 <td class="mat-cell text-center py-3 text-muted"
                                                     [attr.colspan]="displayedOrgColumns.length">
                                                     No organizations assigned
@@ -180,14 +173,7 @@
             </div>
         </div>
     </div>
-
-    <!-- Footer Actions -->
-    <div footer class="d-flex justify-content-end gap-2 w-100">
-        <button mat-button routerLink="/su/surt04" color="warn">Cancel</button>
-        <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="form.invalid || isSaving()">
-            <mat-icon *ngIf="!isSaving()">save</mat-icon>
-            <mat-spinner diameter="20" *ngIf="isSaving()" class="d-inline-block me-2"></mat-spinner>
-            {{ isSaving() ? 'Saving...' : 'Save Changes' }}
-        </button>
-    </div>
 </app-card>
+        </div>
+    </div>
+</div>

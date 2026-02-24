@@ -12,4 +12,5 @@ public interface ISystemDbContext
     public DbSet<SuUserProfile> UserProfiles { get; }
     public DbSet<SuMenu> Menus { get; }
     public DbSet<SuProfileMenu> ProfileMenus { get; }
+    public DbSet<SuConfig> Configs { get; }
 }

@@ -10,6 +10,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { AppCardComponent } from '../../../shared/components/card/card.component';
+import { ActionBarComponent } from '../../../shared/components/action-bar/action-bar.component';
+import { TextboxComponent } from '../../../shared/components/inputs';
 import { Profile } from './surt01.component';
 import { Surt01Service } from './surt01.service';
 
@@ -25,7 +27,9 @@ import { Surt01Service } from './surt01.service';
     MatCheckboxModule,
     MatCardModule,
     MatIconModule,
-    AppCardComponent
+    AppCardComponent,
+    ActionBarComponent,
+    TextboxComponent
   ],
   templateUrl: './surt01-detail.component.html',
   styleUrl: './surt01-detail.component.scss'

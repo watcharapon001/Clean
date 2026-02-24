@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AppCardComponent } from '../../../shared/components/card/card.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { ActionBarComponent } from '../../../shared/components/action-bar/action-bar.component';
 import { Surt04Service, User } from './surt04.service';
 
 @Component({
@@ -23,7 +24,8 @@ import { Surt04Service, User } from './surt04.service';
     MatButtonModule,
     MatIconModule,
     MatDialogModule,
-    AppCardComponent
+    AppCardComponent,
+    ActionBarComponent
   ],
   templateUrl: './surt04.component.html',
   styleUrl: './surt04.component.scss'

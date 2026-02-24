@@ -1,0 +1,92 @@
+<div class="container-fluid py-4">
+  <div class="mb-4">
+    <h2 class="mb-1 text-slate-800">Shared Components Demo</h2>
+    <p class="text-muted mb-0">Testing the global generic UI inputs (Textbox and Number).</p>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6 mb-4">
+      <mat-card class="shadow-sm h-100">
+        <mat-card-header class="border-bottom pb-3 mb-3">
+          <mat-card-title>Data Entry Form</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <form [formGroup]="demoForm" (ngSubmit)="onSubmit()" class="d-flex flex-column gap-3">
+            
+            <!-- Shared Textbox Component -->
+            <textbox 
+              label="Username (Required, 3-20 chars)" 
+              placeholder="Enter your username" 
+              formControlName="username"
+              [maxLength]="20"
+              hint="Only text allowed.">
+            </textbox>
+
+            <!-- Shared Number Component (Integer) -->
+            <number 
+              label="Age (Required, 1-120)" 
+              placeholder="Enter your age" 
+              formControlName="age"
+              [allowDecimals]="false"
+              hint="Only whole numbers allowed.">
+            </number>
+
+            <!-- Shared Number Component (Decimal) -->
+            <number 
+              label="Salary (Required, min 100)" 
+              placeholder="Enter salary" 
+              formControlName="salary"
+              [allowDecimals]="true"
+              hint="Decimals are allowed.">
+            </number>
+
+            <!-- Shared Select Component (Searchable) -->
+            <select-input
+              label="Department (Required)"
+              placeholder="Choose a department"
+              formControlName="department"
+              [options]="departmentOptions"
+              valueField="id"
+              labelField="name"
+              hint="Type to search and filter options.">
+            </select-input>
+
+            <div class="d-flex gap-2 mt-3 pt-3 border-top">
+              <button mat-raised-button color="primary" type="submit">Submit Form</button>
+              <button mat-button type="button" (click)="onReset()">Reset</button>
+            </div>
+            
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Results Panel -->
+    <div class="col-md-6 mb-4">
+      <mat-card class="shadow-sm h-100 bg-light">
+        <mat-card-header class="border-bottom pb-3 mb-3">
+          <mat-card-title>Form State & Results</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          
+          <div class="mb-3 d-flex align-items-center gap-2">
+            <span class="fw-bold">Form Status: </span>
+            <span class="badge" 
+                  [ngClass]="demoForm.valid ? 'bg-success' : 'bg-danger'">
+              {{ demoForm.status }}
+            </span>
+          </div>
+
+          <p class="fw-bold mb-2">Live Form Values:</p>
+          <pre class="bg-white p-3 border rounded font-monospace text-sm">{{ demoForm.value | json }}</pre>
+
+          <ng-container *ngIf="submittedData">
+            <p class="fw-bold mb-2 text-primary mt-4">Submitted Payload:</p>
+            <pre class="bg-primary text-white p-3 rounded font-monospace text-sm">{{ submittedData | json }}</pre>
+          </ng-container>
+
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
