@@ -167,7 +167,8 @@ public static class SeedDataExtensions
             new SuMenu { MenuCode = "SURT02", MenuName = "Menu Setup", Route = "/su/surt02", Sequence = 5, ParentMenuId = system.MenuId },
             new SuMenu { MenuCode = "SURT03", MenuName = "Permission Setup", Route = "/su/surt03", Sequence = 5, ParentMenuId = system.MenuId },
             new SuMenu { MenuCode = "SURT04", MenuName = "User Management", Route = "/su/surt04", Sequence = 5, ParentMenuId = system.MenuId },
-            new SuMenu { MenuCode = "SURT05", MenuName = "Audit Trails", Route = "/su/surt05", Sequence = 6, ParentMenuId = system.MenuId }
+            new SuMenu { MenuCode = "SURT05", MenuName = "Audit Trails", Route = "/su/surt05", Sequence = 6, ParentMenuId = system.MenuId },
+            new SuMenu { MenuCode = "SURT06", MenuName = "Organization Setup", Route = "/su/surt06", Sequence = 7, ParentMenuId = system.MenuId }
         };
 
         foreach (var sm in subMenus)
