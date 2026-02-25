@@ -1,35 +1,62 @@
 <div class="d-flex flex-column flex-shrink-0 bg-slate-900 text-white h-100 position-relative">
 
-    <!-- Brand -->
-    <div class="px-4 py-4 d-flex align-items-center border-bottom border-slate-800">
-        <div class="bg-blue-600 rounded-lg p-1 me-3 d-flex align-items-center justify-content-center"
-            style="width: 32px; height: 32px;">
-            <i class="bi bi-layers-fill text-white fs-6"></i>
+    <!-- User Profile Block -->
+    <div class="px-4 py-4 d-flex align-items-center border-bottom border-slate-700" style="background: rgba(255,255,255,0.04);">
+        <!-- Avatar Circle -->
+        <div class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0" style="width: 42px; height: 42px; background: #3b82f6;">
+            <i class="bi bi-person-fill text-white" style="font-size: 1.3rem;"></i>
         </div>
-        <span class="fs-5 fw-bold tracking-tight">CleanApp</span>
+        
+        <!-- Name & Username -->
+        <div class="ms-3 d-flex flex-column min-w-0">
+            <div class="fw-semibold text-white text-truncate" style="font-size: 14px; line-height: 1.3;">
+                {{ currentUser()?.firstName }} {{ currentUser()?.lastName }}
+            </div>
+            <div class="text-truncate" style="font-size: 12px; color: #94a3b8; line-height: 1.3;">
+                {{ currentUser()?.username }}
+            </div>
+        </div>
     </div>
 
     <!-- Navigation -->
     <div class="flex-grow-1 overflow-y-auto py-3 px-3">
         <ul class="nav flex-column gap-1">
             <li class="nav-item" *ngFor="let menu of menus()">
-                <!-- Parent Menu Item -->
-                <a [routerLink]="menu.route" routerLinkActive="active-nav-link"
+
+                <!-- Parent Menu WITHOUT children → navigate directly -->
+                <a *ngIf="!menu.children || menu.children.length === 0"
+                    [routerLink]="menu.route" routerLinkActive="active-nav-link"
                     class="nav-link d-flex align-items-center px-3 py-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
                     <i [class]="menu.icon ? menu.icon : 'bi bi-circle'" class="me-3 fs-5"></i>
                     <span class="fw-medium">{{ menu.menuName }}</span>
                 </a>
 
-                <!-- Child Menus (Simple indentation for now) -->
-                <ul class="nav flex-column gap-1 ms-3" *ngIf="menu.children && menu.children.length > 0">
-                    <li class="nav-item" *ngFor="let child of menu.children">
-                        <a [routerLink]="child.route" routerLinkActive="active-nav-link"
-                            class="nav-link d-flex align-items-center px-3 py-2 rounded-md text-slate-500 hover:text-white hover:bg-slate-800 transition-colors text-sm">
-                            <i [class]="child.icon ? child.icon : 'bi bi-circle'" class="me-3 fs-6"></i>
-                            <span class="fw-medium">{{ child.menuName }}</span>
-                        </a>
-                    </li>
-                </ul>
+                <!-- Parent Menu WITH children → toggle collapse -->
+                <a *ngIf="menu.children && menu.children.length > 0"
+                    (click)="toggleMenu(menu.menuId)"
+                    class="nav-link d-flex align-items-center px-3 py-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                    style="cursor: pointer;">
+                    <i [class]="menu.icon ? menu.icon : 'bi bi-circle'" class="me-3 fs-5"></i>
+                    <span class="fw-medium flex-grow-1">{{ menu.menuName }}</span>
+                    <i class="bi bi-chevron-down ms-auto transition-transform"
+                       [style.transform]="isExpanded(menu.menuId) ? 'rotate(180deg)' : 'rotate(0)'"
+                       style="font-size: 0.75rem; transition: transform 0.2s ease;"></i>
+                </a>
+
+                <!-- Child Menus (Collapsible) -->
+                <div class="sidebar-submenu" 
+                     *ngIf="menu.children && menu.children.length > 0"
+                     [class.expanded]="isExpanded(menu.menuId)">
+                    <ul class="nav flex-column gap-1 ms-3">
+                        <li class="nav-item" *ngFor="let child of menu.children">
+                            <a [routerLink]="child.route" routerLinkActive="active-nav-link"
+                                class="nav-link d-flex align-items-center px-3 py-2 rounded-md text-slate-500 hover:text-white hover:bg-slate-800 transition-colors text-sm">
+                                <i [class]="child.icon ? child.icon : 'bi bi-circle'" class="me-3 fs-6"></i>
+                                <span class="fw-medium">{{ child.menuName }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </li>
         </ul>
     </div>

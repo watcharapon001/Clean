@@ -89,7 +89,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 
     // Seed development data
-    await app.Services.SeedDevelopmentDataAsync();
+    //await app.Services.SeedDevelopmentDataAsync();
     }
 
 app.UseHttpsRedirection();
