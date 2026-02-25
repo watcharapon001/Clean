@@ -9,6 +9,8 @@ public record GetMeQuery : IRequest<UserDto>;
 public record UserDto(
     string UserId,
     string Username,
+    string? FirstName,
+    string? LastName,
     string? DisplayName,
     string? Email,
     string? OrgId,
@@ -69,6 +71,8 @@ public class GetMeQueryHandler : IRequestHandler<GetMeQuery, UserDto>
         return new UserDto(
             user.UserId.ToString(),
             user.Username ?? "",
+            user.Employee?.FirstName,
+            user.Employee?.LastName,
             user.Employee?.DisplayName,
             user.Email,
             currentOrgId,
