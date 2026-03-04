@@ -69,7 +69,7 @@ export class Surt03Component implements OnInit {
 
   loadProfiles() {
     this.service.getProfiles().subscribe(data => {
-      this.profiles = data;
+      this.profiles = data.items;
     });
   }
 
@@ -112,5 +112,22 @@ export class Surt03Component implements OnInit {
       element.canCreate = newState;
       element.canEdit = newState;
       element.canDelete = newState;
+  }
+
+  exportData() {
+      if (!this.selectedProfileId) {
+          this.snackBar.open('Please select a profile to export.', 'Close', { duration: 3000 });
+          return;
+      }
+      this.service.exportPermissions(this.selectedProfileId).subscribe((blob: Blob) => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `Permissions_${new Date().getTime()}.xlsx`;
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+          a.remove();
+      });
   }
 }

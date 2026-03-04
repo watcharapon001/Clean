@@ -87,13 +87,13 @@ export class Surt04DetailComponent implements OnInit {
     
     // Load dependencies first
     forkJoin({
-        employees: this.service.getEmployees(),
-        profiles: this.profileService.getProfiles(),
+        employees: this.service.getEmployees(1, 1000),
+        profiles: this.profileService.getProfiles(1, 1000),
         orgs: this.service.getOrganizes()
     }).subscribe({
         next: (results) => {
-            this.employees = results.employees;
-            this.profiles = results.profiles;
+            this.employees = results.employees.items;
+            this.profiles = results.profiles.items;
             this.organizations = results.orgs;
             
             this.checkAndLoadUser();

@@ -7,6 +7,7 @@ import { inject } from '@angular/core';
 
 import { routes } from './app.routes';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
+import { errorInterceptor } from './core/interceptors/error.interceptor';
 import { AuthService } from './core/auth/auth.service';
 
 function initializeApp(): Promise<any> {
@@ -17,7 +18,7 @@ function initializeApp(): Promise<any> {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideHttpClient(withInterceptors([authInterceptor])),
+    provideHttpClient(withInterceptors([authInterceptor, errorInterceptor])),
     provideAnimationsAsync(),
     provideAppInitializer(initializeApp)
   ]

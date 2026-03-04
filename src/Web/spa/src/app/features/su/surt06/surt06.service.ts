@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { PaginatedList } from '../surt01/surt01.service';
 
 export interface Organize {
   orgId: string;
@@ -26,8 +27,24 @@ export class Surt06Service {
   private http = inject(HttpClient);
   private apiUrl = '/api/su/surt06';
 
-  getOrganizes(): Observable<Organize[]> {
-    return this.http.get<Organize[]>(`${this.apiUrl}/list`);
+  getOrganizes(
+    pageNumber: number = 1,
+    pageSize: number = 10,
+    sortColumn?: string,
+    sortDirection?: string
+  ): Observable<PaginatedList<Organize>> {
+    let params = new HttpParams()
+      .set('pageNumber', pageNumber.toString())
+      .set('pageSize', pageSize.toString());
+
+    if (sortColumn) {
+      params = params.set('sortColumn', sortColumn);
+      if (sortDirection) {
+        params = params.set('sortDirection', sortDirection);
+      }
+    }
+
+    return this.http.get<PaginatedList<Organize>>(`${this.apiUrl}/list`, { params });
   }
 
   createOrganize(command: CreateOrganizeCommand): Observable<string> {

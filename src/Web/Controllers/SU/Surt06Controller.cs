@@ -17,10 +17,11 @@ public class Surt06Controller : ControllerBase
     }
 
     [HttpGet("list")]
-    public async Task<ActionResult<List<OrganizeDto>>> GetList()
+    public async Task<ActionResult<Application.Common.Models.PaginatedList<OrganizeDto>>> GetList([FromQuery] GetOrganizeListQuery query)
     {
-        return await _sender.Send(new GetOrganizeListQuery());
+        return await _sender.Send(query);
     }
+
 
     [HttpPost("create")]
     public async Task<ActionResult<Guid>> Create(CreateOrganizeCommand command)

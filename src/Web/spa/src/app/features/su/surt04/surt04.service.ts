@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { PaginatedList } from '../surt01/surt01.service';
 
 export interface User {
   userId: string;
@@ -37,8 +38,24 @@ export class Surt04Service {
   private apiUrl = '/api/su/surt04';
   private employeeApiUrl = '/api/dbrt01';
 
-  getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.apiUrl);
+  getUsers(
+    pageNumber: number = 1,
+    pageSize: number = 10,
+    sortColumn?: string,
+    sortDirection?: string
+  ): Observable<PaginatedList<User>> {
+    let params = new HttpParams()
+      .set('pageNumber', pageNumber.toString())
+      .set('pageSize', pageSize.toString());
+
+    if (sortColumn) {
+      params = params.set('sortColumn', sortColumn);
+      if (sortDirection) {
+        params = params.set('sortDirection', sortDirection);
+      }
+    }
+
+    return this.http.get<PaginatedList<User>>(this.apiUrl, { params });
   }
 
   getUser(id: string): Observable<User> {
@@ -57,12 +74,11 @@ export class Surt04Service {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  // Helper to get employees for dropdown
-  getEmployees(): Observable<Employee[]> {
-      // Assuming GET /api/db/dbrt01 returns a list or a paginated result. 
-      // Based on dbrt01.service.ts likely returning list or simple object.
-      // I should check dbrt01.service.ts but I'll assume standard list for now.
-    return this.http.get<Employee[]>(this.employeeApiUrl);
+  getEmployees(pageNumber: number = 1, pageSize: number = 1000): Observable<PaginatedList<Employee>> {
+    let params = new HttpParams()
+      .set('pageNumber', pageNumber.toString())
+      .set('pageSize', pageSize.toString());
+    return this.http.get<PaginatedList<Employee>>(this.employeeApiUrl, { params });
   }
 
   getOrganizes(): Observable<Organization[]> {

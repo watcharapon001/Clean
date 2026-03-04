@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, signal, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
@@ -13,6 +13,8 @@ import { Dbrt01Service, Dbrt01 } from './dbrt01.service';
 import { AppCardComponent } from '../../../shared/components/card/card.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { ActionBarComponent } from '../../../shared/components/action-bar/action-bar.component';
+import { merge } from 'rxjs';
+import { startWith, switchMap, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dbrt01',
@@ -33,7 +35,7 @@ import { ActionBarComponent } from '../../../shared/components/action-bar/action
   templateUrl: './dbrt01.component.html',
   styleUrls: ['./dbrt01.component.scss']
 })
-export class Dbrt01Component implements OnInit {
+export class Dbrt01Component implements OnInit, AfterViewInit {
   private dbrt01Service = inject(Dbrt01Service);
   private dialog = inject(MatDialog);
   
@@ -43,16 +45,37 @@ export class Dbrt01Component implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+  totalCount = 0;
+
   ngOnInit() {
-    this.loadEmployees();
+  }
+
+  ngAfterViewInit() {
+    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
+
+    merge(this.sort.sortChange, this.paginator.page)
+      .pipe(
+        startWith({}),
+        switchMap(() => {
+          return this.dbrt01Service.getDbrt01s(
+            this.paginator.pageIndex + 1,
+            this.paginator.pageSize,
+            this.sort.active,
+            this.sort.direction
+          );
+        }),
+        map((response: any) => {
+          this.totalCount = response.totalCount;
+          return response.items;
+        })
+      )
+      .subscribe((data: Dbrt01[]) => {
+        this.dataSource.data = data;
+      });
   }
 
   loadEmployees() {
-    this.dbrt01Service.getDbrt01s().subscribe(data => {
-      this.dataSource.data = data;
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    });
+    this.paginator.page.emit();
   }
 
   deleteEmployee(employee: Dbrt01) {
@@ -72,4 +95,5 @@ export class Dbrt01Component implements OnInit {
       }
     });
   }
+
 }

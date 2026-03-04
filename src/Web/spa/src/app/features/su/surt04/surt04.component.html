@@ -21,19 +21,21 @@
 
                     <!-- Username Column -->
                     <ng-container matColumnDef="username">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Username </th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> User </th>
                         <td mat-cell *matCellDef="let element">
                             <a [routerLink]="['/su/surt04/detail', element.userId]"
-                                class="text-decoration-none fw-bold text-primary">
-                                {{element.username}}
+                                class="d-flex align-items-center py-2 text-decoration-none text-dark group-hover"
+                                style="cursor: pointer;">
+                                <div class="avatar bg-light text-primary rounded-circle d-flex align-items-center justify-content-center me-3"
+                                    style="width: 40px; height: 40px;">
+                                    <mat-icon>person</mat-icon>
+                                </div>
+                                <div>
+                                    <div class="fw-bold hover-primary">{{ element.username }}</div>
+                                    <div class="small text-muted">{{ element.employeeName || 'No Employee Link' }}</div>
+                                </div>
                             </a>
                         </td>
-                    </ng-container>
-
-                    <!-- Employee Name Column -->
-                    <ng-container matColumnDef="employeeName">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Employee </th>
-                        <td mat-cell *matCellDef="let element"> {{element.employeeName || '-'}} </td>
                     </ng-container>
 
                     <!-- Status Column -->
@@ -60,13 +62,13 @@
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
                     <tr class="mat-row" *matNoDataRow>
-                        <td class="mat-cell" colspan="5" class="p-4 text-center text-secondary">
+                        <td class="mat-cell" colspan="4" class="p-4 text-center text-secondary">
                             No data matching the filter
                         </td>
                     </tr>
                 </table>
 
-                <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
+                <mat-paginator [length]="totalCount" [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
             </div>
         </div>
     </div>

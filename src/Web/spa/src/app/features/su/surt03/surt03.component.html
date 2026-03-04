@@ -7,6 +7,9 @@
             <mat-spinner diameter="20" *ngIf="isSaving()" class="d-inline-block me-2"></mat-spinner>
             {{ isSaving() ? 'Saving...' : 'Save Permissions' }}
         </button>
+        <button mat-stroked-button color="accent" (click)="exportData()" class="ms-2" [disabled]="!selectedProfileId">
+            <i class="bi bi-file-earmark-excel me-2"></i> Export to Excel
+        </button>
     </app-action-bar>
 
     <div class="row justify-content-center">

@@ -20,10 +20,12 @@ public class Dbrt01Controller : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<Dbrt01Dto>>> GetList([FromQuery] bool onlyAvailable = false, [FromQuery] Guid? includeUserId = null)
+    public async Task<ActionResult<Application.Common.Models.PaginatedList<Dbrt01Dto>>> GetList([FromQuery] GetDbrt01Query query)
     {
-        return await _sender.Send(new GetDbrt01Query(onlyAvailable, includeUserId));
+        return await _sender.Send(query);
     }
+
+
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Dbrt01Dto>> Get(string id)

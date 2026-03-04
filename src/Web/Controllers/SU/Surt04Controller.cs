@@ -19,9 +19,9 @@ public class Surt04Controller : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<Surt04Dto>>> GetList()
+    public async Task<ActionResult<Application.Common.Models.PaginatedList<Surt04Dto>>> GetList([FromQuery] GetSurt04Query query)
     {
-        return await _sender.Send(new GetSurt04Query());
+        return await _sender.Send(query);
     }
 
     [HttpGet("organizes")]
