@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AppCardComponent } from '../../../shared/components/card/card.component';
+import { ActionBarComponent } from '../../../shared/components/action-bar/action-bar.component';
 import { Surt05Service, AuditLog } from './surt05.service';
 import { JsonDialogComponent } from './json-dialog.component';
 
@@ -22,6 +23,7 @@ import { JsonDialogComponent } from './json-dialog.component';
     MatIconModule,
     MatDialogModule,
     AppCardComponent,
+    ActionBarComponent,
     DatePipe
   ],
   templateUrl: './surt05.component.html',
@@ -53,6 +55,19 @@ export class Surt05Component implements OnInit {
     this.dialog.open(JsonDialogComponent, {
       width: '600px',
       data: log
+    });
+  }
+
+  exportData() {
+    this.service.exportAuditLogs().subscribe((blob: Blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `AuditLogs_${new Date().getTime()}.xlsx`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      a.remove();
     });
   }
 }

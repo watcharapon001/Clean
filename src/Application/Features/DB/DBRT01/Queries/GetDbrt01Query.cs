@@ -2,12 +2,22 @@ using Application.Common.Abstractions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
+using Application.Common.Models;
+
 namespace Application.Features.DB.DBRT01.Queries;
 
 // 1. Get List
-public record GetDbrt01Query(bool OnlyAvailable = false, Guid? IncludeUserId = null) : IRequest<List<Dbrt01Dto>>;
+public record GetDbrt01Query : IRequest<PaginatedList<Dbrt01Dto>>
+{
+    public bool OnlyAvailable { get; init; } = false;
+    public Guid? IncludeUserId { get; init; } = null;
+    public int PageNumber { get; init; } = 1;
+    public int PageSize { get; init; } = 10;
+    public string? SortColumn { get; init; }
+    public string? SortDirection { get; init; }
+}
 
-public class GetDbrt01QueryHandler : IRequestHandler<GetDbrt01Query, List<Dbrt01Dto>>
+public class GetDbrt01QueryHandler : IRequestHandler<GetDbrt01Query, PaginatedList<Dbrt01Dto>>
 {
     private readonly IApplicationDbContext _context;
     private readonly ICurrentUserService _currentUserService;
@@ -18,10 +28,11 @@ public class GetDbrt01QueryHandler : IRequestHandler<GetDbrt01Query, List<Dbrt01
         _currentUserService = currentUserService;
     }
 
-    public async Task<List<Dbrt01Dto>> Handle(GetDbrt01Query request, CancellationToken cancellationToken)
+    public async Task<PaginatedList<Dbrt01Dto>> Handle(GetDbrt01Query request, CancellationToken cancellationToken)
     {
         var orgId = _currentUserService.OrgId;
-        if (string.IsNullOrEmpty(orgId)) return new List<Dbrt01Dto>(); 
+        if (string.IsNullOrEmpty(orgId)) 
+            return new PaginatedList<Dbrt01Dto>(new List<Dbrt01Dto>(), 0, request.PageNumber, request.PageSize); 
 
         var query = _context.DbEmployees
             .AsNoTracking()
@@ -32,7 +43,18 @@ public class GetDbrt01QueryHandler : IRequestHandler<GetDbrt01Query, List<Dbrt01
             query = query.Where(e => e.User == null || (request.IncludeUserId.HasValue && e.User.UserId == request.IncludeUserId.Value));
         }
 
-        var employees = await query
+        if (!string.IsNullOrEmpty(request.SortColumn))
+        {
+            query = request.SortDirection?.ToLower() == "desc" 
+                ? query.OrderByDescending(e => EF.Property<object>(e, request.SortColumn))
+                : query.OrderBy(e => EF.Property<object>(e, request.SortColumn));
+        }
+        else
+        {
+            query = query.OrderBy(e => e.EmployeeCode);
+        }
+
+        return await query
             .Select(e => new Dbrt01Dto(
                 e.EmployeeId.ToString(),
                 e.OrgId.ToString(),
@@ -44,9 +66,7 @@ public class GetDbrt01QueryHandler : IRequestHandler<GetDbrt01Query, List<Dbrt01
                 e.Phone,
                 e.IsActive
             ))
-            .ToListAsync(cancellationToken);
-
-        return employees;
+            .PaginatedListAsync(request.PageNumber, request.PageSize);
     }
 }
 

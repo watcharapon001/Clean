@@ -20,4 +20,12 @@ public class Surt05Controller : ControllerBase
     {
         return await _sender.Send(new GetAuditLogsQuery());
     }
+
+    [HttpGet("export")]
+    public async Task<IActionResult> Export()
+    {
+        var fileBytes = await _sender.Send(new ExportAuditLogsQuery());
+        var fileName = $"AuditLogs_{DateTime.Now:yyyyMMddHHmmss}.xlsx";
+        return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+    }
 }

@@ -18,10 +18,11 @@ public class Surt01Controller : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<Surt01Dto>>> GetList()
+    public async Task<ActionResult<Application.Common.Models.PaginatedList<Surt01Dto>>> GetList([FromQuery] GetSurt01Query query)
     {
-        return await _sender.Send(new GetSurt01Query());
+        return await _sender.Send(query);
     }
+
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Surt01Dto>> Get(Guid id)

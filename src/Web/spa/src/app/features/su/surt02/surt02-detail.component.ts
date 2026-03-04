@@ -61,18 +61,19 @@ export class Surt02DetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadParentMenus();
     this.menuId = this.route.snapshot.paramMap.get('id');
-    if (this.menuId && this.menuId !== 'new') {
-      this.isEditMode.set(true);
-      this.loadMenu(this.menuId);
-    }
+    this.loadParentMenus();
   }
 
   loadParentMenus() {
-    this.service.getMenus().subscribe(data => {
+    this.service.getMenus(1, 1000).subscribe(data => {
       // Filter out self to avoid circular dependency if needed, but for now just all menus
-      this.parentMenus = data.filter(m => m.menuId !== this.menuId); 
+      this.parentMenus = data.items.filter(m => m.menuId !== this.menuId); 
+      
+      if (this.menuId && this.menuId !== 'new') {
+        this.isEditMode.set(true);
+        this.loadMenu(this.menuId);
+      }
     });
   }
 

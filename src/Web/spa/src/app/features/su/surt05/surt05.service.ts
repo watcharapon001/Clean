@@ -21,4 +21,10 @@ export class Surt05Service {
   getAuditLogs(): Observable<AuditLog[]> {
     return this.http.get<AuditLog[]>(`${this.apiUrl}/audit-logs`);
   }
+
+  exportAuditLogs(): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/export`, {
+      responseType: 'blob'
+    });
+  }
 }

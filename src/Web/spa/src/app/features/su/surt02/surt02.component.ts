@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, signal, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -12,6 +12,8 @@ import { AppCardComponent } from '../../../shared/components/card/card.component
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { ActionBarComponent } from '../../../shared/components/action-bar/action-bar.component';
 import { Surt02Service } from './surt02.service';
+import { merge } from 'rxjs';
+import { startWith, switchMap, map } from 'rxjs/operators';
 
 export interface Menu {
   menuId: string;
@@ -43,26 +45,48 @@ export interface Menu {
   templateUrl: './surt02.component.html',
   styleUrl: './surt02.component.scss'
 })
-export class Surt02Component implements OnInit {
+export class Surt02Component implements OnInit, AfterViewInit {
   private service = inject(Surt02Service);
   private dialog = inject(MatDialog);
   
-  displayedColumns: string[] = ['index', 'menuCode', 'menuName', 'parentMenu', 'route', 'sequence', 'status', 'actions'];
+  displayedColumns: string[] = ['index', 'menuCode', 'parentMenu', 'route', 'sequence', 'status', 'actions'];
   dataSource = new MatTableDataSource<Menu>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  ngOnInit() {
-    this.loadMenus();
+  totalCount = 0;
+
+  ngOnInit(): void {
+    // Initial load triggered by ngAfterViewInit via paginator/sort merge pipeline
+  }
+
+  ngAfterViewInit(): void {
+    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
+
+    merge(this.sort.sortChange, this.paginator.page)
+      .pipe(
+        startWith({}),
+        switchMap(() => {
+          return this.service.getMenus(
+            this.paginator.pageIndex + 1,
+            this.paginator.pageSize,
+            this.sort.active,
+            this.sort.direction
+          );
+        }),
+        map((response: any) => {
+          this.totalCount = response.totalCount;
+          return response.items;
+        })
+      )
+      .subscribe((data: Menu[]) => {
+        this.dataSource.data = data;
+      });
   }
 
   loadMenus() {
-    this.service.getMenus().subscribe(data => {
-      this.dataSource.data = data;
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    });
+    this.paginator.page.emit();
   }
 
   deleteMenu(menu: Menu) {
@@ -82,4 +106,5 @@ export class Surt02Component implements OnInit {
       }
     });
   }
+
 }

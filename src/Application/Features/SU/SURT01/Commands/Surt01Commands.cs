@@ -1,8 +1,40 @@
 using Application.Common.Abstractions;
 using Domain.Entities.SU;
+using FluentValidation;
 using MediatR;
 
 namespace Application.Features.SU.SURT01.Commands;
+
+public class CreateSurt01CommandValidator : AbstractValidator<CreateSurt01Command>
+{
+    public CreateSurt01CommandValidator()
+    {
+        RuleFor(v => v.ProfileCode)
+            .NotEmpty().WithMessage("Profile Code is required.")
+            .MaximumLength(10).WithMessage("Profile Code must not exceed 10 characters.");
+
+        RuleFor(v => v.ProfileName)
+            .NotEmpty().WithMessage("Profile Name is required.")
+            .MaximumLength(100).WithMessage("Profile Name must not exceed 100 characters.");
+    }
+}
+
+public class UpdateSurt01CommandValidator : AbstractValidator<UpdateSurt01Command>
+{
+    public UpdateSurt01CommandValidator()
+    {
+        RuleFor(v => v.ProfileId)
+            .NotEmpty().WithMessage("Profile ID is required.");
+
+        RuleFor(v => v.ProfileCode)
+            .NotEmpty().WithMessage("Profile Code is required.")
+            .MaximumLength(10).WithMessage("Profile Code must not exceed 10 characters.");
+
+        RuleFor(v => v.ProfileName)
+            .NotEmpty().WithMessage("Profile Name is required.")
+            .MaximumLength(100).WithMessage("Profile Name must not exceed 100 characters.");
+    }
+}
 
 // 1. Create
 public record CreateSurt01Command : IRequest<Guid>

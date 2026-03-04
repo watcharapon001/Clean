@@ -17,10 +17,11 @@ public class Surt07Controller : ControllerBase
     }
 
     [HttpGet("list")]
-    public async Task<ActionResult<List<ConfigDto>>> GetList()
+    public async Task<ActionResult<Application.Common.Models.PaginatedList<ConfigDto>>> GetList([FromQuery] GetConfigListQuery query)
     {
-        return await _sender.Send(new GetConfigListQuery());
+        return await _sender.Send(query);
     }
+
 
     [HttpPut("update")]
     public async Task<IActionResult> Update(UpdateConfigCommand command)

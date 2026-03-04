@@ -12,6 +12,8 @@ import { AppCardComponent } from '../../../shared/components/card/card.component
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { ActionBarComponent } from '../../../shared/components/action-bar/action-bar.component';
 import { Surt01Service } from './surt01.service';
+import { merge } from 'rxjs';
+import { startWith, switchMap, map } from 'rxjs/operators';
 
 export interface Profile {
   profileId: string;
@@ -46,7 +48,6 @@ export class Surt01Component implements OnInit {
   displayedColumns: string[] = [
     'index',
     'profileCode',
-    'profileName',
     'description',
     'status',
     'actions',
@@ -56,16 +57,38 @@ export class Surt01Component implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  ngOnInit() {
-    this.loadProfiles();
+  totalCount = 0;
+
+  ngOnInit(): void {
+    // Initial load will be triggered by ngAfterViewInit via paginator/sort merge pipeline
+  }
+
+  ngAfterViewInit(): void {
+    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
+
+    merge(this.sort.sortChange, this.paginator.page)
+      .pipe(
+        startWith({}),
+        switchMap(() => {
+          return this.service.getProfiles(
+            this.paginator.pageIndex + 1,
+            this.paginator.pageSize,
+            this.sort.active,
+            this.sort.direction
+          );
+        }),
+        map((response: any) => {
+          this.totalCount = response.totalCount;
+          return response.items;
+        })
+      )
+      .subscribe((data: Profile[]) => {
+        this.dataSource.data = data;
+      });
   }
 
   loadProfiles() {
-    this.service.getProfiles().subscribe((data) => {
-      this.dataSource.data = data;
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    });
+    this.paginator.page.emit(); // Trigger the merge pipeline to reload from API
   }
 
   deleteProfile(profile: Profile) {
@@ -85,4 +108,5 @@ export class Surt01Component implements OnInit {
       }
     });
   }
+
 }

@@ -1,5 +1,13 @@
-<app-card title="System Logging & Audit Trails (SURT05)">
-  <div class="overflow-x-auto">
+<div class="container-fluid py-4">
+  <app-action-bar>
+    <button mat-stroked-button color="accent" class="d-flex align-items-center gap-2" (click)="exportData()">
+      <i class="bi bi-file-earmark-excel"></i>
+      Export to Excel
+    </button>
+  </app-action-bar>
+
+  <app-card title="System Logging & Audit Trails (SURT05)">
+    <div class="overflow-x-auto">
     <table mat-table [dataSource]="dataSource" matSort class="w-full">
       <!-- Timestamp Column -->
       <ng-container matColumnDef="timestamp">
@@ -68,3 +76,4 @@
     <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>
   </div>
 </app-card>
+</div>

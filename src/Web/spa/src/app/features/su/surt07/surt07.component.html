@@ -1,7 +1,8 @@
 <div class="container-fluid py-4">
 
   <!-- Action Bar -->
-  <app-action-bar></app-action-bar>
+  <app-action-bar>
+  </app-action-bar>
   <app-card>
     <div class="card-content p-0">
       
@@ -23,8 +24,21 @@
 
           <!-- ConfigKey Column -->
           <ng-container matColumnDef="configKey">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Configuration Key </th>
-            <td mat-cell *matCellDef="let element" class="fw-bold text-primary"> {{element.configKey}} </td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Configuration </th>
+            <td mat-cell *matCellDef="let element">
+                <a (click)="openDialog(element)"
+                    class="d-flex align-items-center py-2 text-decoration-none text-dark group-hover"
+                    style="cursor: pointer;">
+                    <div class="avatar bg-light text-primary rounded-circle d-flex align-items-center justify-content-center me-3"
+                        style="width: 40px; height: 40px;">
+                        <mat-icon>settings</mat-icon>
+                    </div>
+                    <div>
+                        <div class="fw-bold hover-primary">{{ element.configKey }}</div>
+                        <div class="small text-muted text-truncate" style="max-width: 250px;">{{ element.description || 'System Configuration' }}</div>
+                    </div>
+                </a>
+            </td>
           </ng-container>
 
           <!-- ConfigValue Column -->
@@ -41,21 +55,11 @@
             </td>
           </ng-container>
 
-          <!-- Description Column -->
-          <ng-container matColumnDef="description">
-            <th mat-header-cell *matHeaderCellDef> Description </th>
-            <td mat-cell *matCellDef="let element" class="text-muted text-sm text-truncate" style="max-width: 300px;">
-                {{element.description || '-'}} 
-            </td>
-          </ng-container>
-
           <!-- Actions Column -->
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef class="text-end"> Actions </th>
             <td mat-cell *matCellDef="let element" class="text-end">
-              <button mat-icon-button color="primary" matTooltip="Edit Value" (click)="openDialog(element)">
-                <mat-icon>edit</mat-icon>
-              </button>
+              <!-- Edit action handled by the config row click -->
             </td>
           </ng-container>
 
@@ -63,14 +67,14 @@
           <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="hover:bg-gray-50 transition-colors"></tr>
 
           <tr class="mat-row" *matNoDataRow>
-            <td class="mat-cell text-center py-4 text-muted" colspan="4">
+            <td class="mat-cell text-center py-4 text-muted" colspan="3">
               No configurations found matching the filter.
             </td>
           </tr>
         </table>
       </div>
 
-      <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+      <mat-paginator [length]="totalCount" [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
 
     </div>
   </app-card>

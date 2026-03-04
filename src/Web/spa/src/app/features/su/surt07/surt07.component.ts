@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -12,6 +12,8 @@ import { AppCardComponent } from '../../../shared/components/card/card.component
 import { ActionBarComponent } from '../../../shared/components/action-bar/action-bar.component';
 import { Surt07Service, SuConfig } from './surt07.service';
 import { Surt07DetailComponent } from './surt07-detail.component';
+import { merge } from 'rxjs';
+import { startWith, switchMap, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-surt07',
@@ -32,27 +34,48 @@ import { Surt07DetailComponent } from './surt07-detail.component';
   templateUrl: './surt07.component.html',
   styleUrls: ['./surt07.component.scss']
 })
-export class Surt07Component implements OnInit {
+export class Surt07Component implements OnInit, AfterViewInit {
   private surt07Service = inject(Surt07Service);
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
 
-  displayedColumns: string[] = ['configKey', 'configValue', 'description', 'actions'];
+  displayedColumns: string[] = ['configKey', 'configValue', 'actions'];
   dataSource = new MatTableDataSource<SuConfig>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  ngOnInit() {
-    this.loadData();
+  totalCount = 0;
+
+  ngOnInit(): void {
+  }
+
+  ngAfterViewInit(): void {
+    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
+
+    merge(this.sort.sortChange, this.paginator.page)
+      .pipe(
+        startWith({}),
+        switchMap(() => {
+          return this.surt07Service.getConfigs(
+            this.paginator.pageIndex + 1,
+            this.paginator.pageSize,
+            this.sort.active,
+            this.sort.direction
+          );
+        }),
+        map((response: any) => {
+          this.totalCount = response.totalCount;
+          return response.items;
+        })
+      )
+      .subscribe((data: SuConfig[]) => {
+        this.dataSource.data = data;
+      });
   }
 
   loadData() {
-    this.surt07Service.getConfigs().subscribe(data => {
-      this.dataSource.data = data;
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    });
+    this.paginator.page.emit();
   }
 
   applyFilter(event: Event) {
@@ -76,4 +99,5 @@ export class Surt07Component implements OnInit {
       }
     });
   }
+
 }

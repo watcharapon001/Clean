@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { PaginatedList } from '../surt01/surt01.service';
 
 export interface SuConfig {
   configKey: string;
@@ -19,8 +20,24 @@ export class Surt07Service {
   private http = inject(HttpClient);
   private apiUrl = '/api/su/surt07';
 
-  getConfigs(): Observable<SuConfig[]> {
-    return this.http.get<SuConfig[]>(`${this.apiUrl}/list`);
+  getConfigs(
+    pageNumber: number = 1,
+    pageSize: number = 10,
+    sortColumn?: string,
+    sortDirection?: string
+  ): Observable<PaginatedList<SuConfig>> {
+    let params = new HttpParams()
+      .set('pageNumber', pageNumber.toString())
+      .set('pageSize', pageSize.toString());
+
+    if (sortColumn) {
+      params = params.set('sortColumn', sortColumn);
+      if (sortDirection) {
+        params = params.set('sortDirection', sortDirection);
+      }
+    }
+
+    return this.http.get<PaginatedList<SuConfig>>(`${this.apiUrl}/list`, { params });
   }
 
   updateConfig(command: UpdateConfigCommand): Observable<void> {

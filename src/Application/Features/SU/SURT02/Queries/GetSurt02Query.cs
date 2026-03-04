@@ -4,12 +4,20 @@ using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
+using Application.Common.Models;
+
 namespace Application.Features.SU.SURT02.Queries;
 
 // 1. Get List
-public record GetSurt02Query : IRequest<List<Surt02Dto>>;
+public record GetSurt02Query : IRequest<PaginatedList<Surt02Dto>>
+{
+    public int PageNumber { get; init; } = 1;
+    public int PageSize { get; init; } = 10;
+    public string? SortColumn { get; init; }
+    public string? SortDirection { get; init; }
+}
 
-public class GetSurt02QueryHandler : IRequestHandler<GetSurt02Query, List<Surt02Dto>>
+public class GetSurt02QueryHandler : IRequestHandler<GetSurt02Query, PaginatedList<Surt02Dto>>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
@@ -20,14 +28,27 @@ public class GetSurt02QueryHandler : IRequestHandler<GetSurt02Query, List<Surt02
         _mapper = mapper;
     }
 
-    public async Task<List<Surt02Dto>> Handle(GetSurt02Query request, CancellationToken cancellationToken)
+    public async Task<PaginatedList<Surt02Dto>> Handle(GetSurt02Query request, CancellationToken cancellationToken)
     {
-        return await _context.Menus
+        var query = _context.Menus
             .AsNoTracking()
             .Include(m => m.ParentMenu)
-            .OrderBy(m => m.Sequence)
+            .AsQueryable();
+
+        if (!string.IsNullOrEmpty(request.SortColumn))
+        {
+            query = request.SortDirection?.ToLower() == "desc"
+                ? query.OrderByDescending(e => EF.Property<object>(e, request.SortColumn))
+                : query.OrderBy(e => EF.Property<object>(e, request.SortColumn));
+        }
+        else
+        {
+            query = query.OrderBy(m => m.Sequence);
+        }
+
+        return await query
             .ProjectTo<Surt02Dto>(_mapper.ConfigurationProvider)
-            .ToListAsync(cancellationToken);
+            .PaginatedListAsync(request.PageNumber, request.PageSize);
     }
 }
 
