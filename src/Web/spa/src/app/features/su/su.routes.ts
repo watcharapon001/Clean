@@ -1,4 +1,7 @@
 import { Routes } from '@angular/router';
+import { surt01Resolver } from './surt01/surt01.resolver';
+import { surt02Resolver } from './surt02/surt02.resolver';
+import { surt04Resolver } from './surt04/surt04.resolver';
 
 export const SU_ROUTES: Routes = [
   {
@@ -9,11 +12,13 @@ export const SU_ROUTES: Routes = [
   {
     path: 'surt01/detail/new',
     loadComponent: () => import('./surt01/surt01-detail.component').then(m => m.Surt01DetailComponent),
+    resolve: { profile: surt01Resolver },
     data: { programCode: 'SURT01' }
   },
   {
     path: 'surt01/detail/:id',
     loadComponent: () => import('./surt01/surt01-detail.component').then(m => m.Surt01DetailComponent),
+    resolve: { profile: surt01Resolver },
     data: { programCode: 'SURT01' }
   },
   {
@@ -24,11 +29,13 @@ export const SU_ROUTES: Routes = [
   {
     path: 'surt02/detail/new',
     loadComponent: () => import('./surt02/surt02-detail.component').then(m => m.Surt02DetailComponent),
+    resolve: { detailData: surt02Resolver },
     data: { programCode: 'SURT02' }
   },
   {
     path: 'surt02/detail/:id',
     loadComponent: () => import('./surt02/surt02-detail.component').then(m => m.Surt02DetailComponent),
+    resolve: { detailData: surt02Resolver },
     data: { programCode: 'SURT02' }
   },
   {
@@ -44,11 +51,13 @@ export const SU_ROUTES: Routes = [
   {
     path: 'surt04/detail/new',
     loadComponent: () => import('./surt04/surt04-detail.component').then(m => m.Surt04DetailComponent),
+    resolve: { detailData: surt04Resolver },
     data: { programCode: 'SURT04' }
   },
   {
     path: 'surt04/detail/:id',
     loadComponent: () => import('./surt04/surt04-detail.component').then(m => m.Surt04DetailComponent),
+    resolve: { detailData: surt04Resolver },
     data: { programCode: 'SURT04' }
   },
   {

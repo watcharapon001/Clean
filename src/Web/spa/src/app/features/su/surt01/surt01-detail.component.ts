@@ -56,15 +56,13 @@ export class Surt01DetailComponent implements OnInit {
 
   ngOnInit() {
     this.profileId = this.route.snapshot.paramMap.get('id');
-    if (this.profileId && this.profileId !== 'new') {
-      this.isEditMode.set(true);
-      this.loadProfile(this.profileId);
-    }
-  }
-
-  loadProfile(id: string) {
-    this.service.getProfile(id).subscribe(data => {
-      this.form.patchValue(data);
+    
+    // Read resolved data
+    this.route.data.subscribe(({ profile }) => {
+      if (profile) {
+        this.isEditMode.set(true);
+        this.form.patchValue(profile);
+      }
     });
   }
 
