@@ -83,67 +83,42 @@ export class Surt04DetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isLoading.set(true);
-    
-    // Load dependencies first
-    forkJoin({
-        employees: this.service.getEmployees(1, 1000),
-        profiles: this.profileService.getProfiles(1, 1000),
-        orgs: this.service.getOrganizes()
-    }).subscribe({
-        next: (results) => {
-            this.employees = results.employees.items;
-            this.profiles = results.profiles.items;
-            this.organizations = results.orgs;
-            
-            this.checkAndLoadUser();
-        },
-        error: () => this.isLoading.set(false)
-    });
-  }
-
-  checkAndLoadUser() {
     this.userId = this.route.snapshot.paramMap.get('id');
-    if (this.userId && this.userId !== 'new') {
-      this.isEditMode.set(true);
-      this.loadUser(this.userId);
-    } else {
-        // New user: Password is required
-        this.form.get('password')?.setValidators([Validators.required]);
-        this.form.get('password')?.updateValueAndValidity();
-        this.isLoading.set(false);
-    }
-  }
 
-  // Removed loadDependencies method as it's handled in ngOnInit
-  // loadDependencies() { ... }
+    this.route.data.subscribe(({ detailData }) => {
+      if (detailData) {
+        this.employees = detailData.employees;
+        this.profiles = detailData.profiles;
+        this.organizations = detailData.organizations;
 
-  loadUser(id: string) {
-    this.isLoading.set(true);
-    this.service.getUser(id).subscribe({
-      next: (data) => {
-        this.form.patchValue({
-            username: data.username,
-            email: data.email,
-            employeeId: data.employeeId,
-            profileIds: data.profileIds,
-            userOrgs: data.userOrgs ? data.userOrgs.map(uo => uo.orgId) : [],
-            isActive: data.isActive,
-            password: '' // Don't show password
-        });
+        if (detailData.user) {
+          this.isEditMode.set(true);
+          const data = detailData.user;
+          
+          this.form.patchValue({
+              username: data.username,
+              email: data.email,
+              employeeId: data.employeeId,
+              profileIds: data.profileIds,
+              userOrgs: data.userOrgs ? data.userOrgs.map((uo: any) => uo.orgId) : [],
+              isActive: data.isActive,
+              password: '' // Don't show password
+          });
 
-        // Populate displayed lists
-        if (data.profileIds) {
-            this.selectedProfiles = this.profiles.filter(p => data.profileIds.includes(p.profileId));
+          // Populate displayed lists
+          if (data.profileIds) {
+              this.selectedProfiles = this.profiles.filter(p => data.profileIds.includes(p.profileId));
+          }
+          if (data.userOrgs) {
+              const orgIds = data.userOrgs.map((uo: any) => uo.orgId);
+              this.selectedOrgs = this.organizations.filter(o => orgIds.includes(o.orgId));
+          }
+        } else {
+          // New user: Password is required
+          this.form.get('password')?.setValidators([Validators.required]);
+          this.form.get('password')?.updateValueAndValidity();
         }
-        if (data.userOrgs) {
-            const orgIds = data.userOrgs.map(uo => uo.orgId);
-            this.selectedOrgs = this.organizations.filter(o => orgIds.includes(o.orgId));
-        }
-
-        this.isLoading.set(false);
-      },
-      error: () => this.isLoading.set(false)
+      }
     });
   }
 

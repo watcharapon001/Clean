@@ -4,6 +4,7 @@ import { LoginComponent } from './features/auth/login/login.component';
 import { SwitchOrgComponent } from './features/auth/switch-org/switch-org.component';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 import { DashboardComponent } from './features/dashboard/dashboard.component';
+import { dbrt01Resolver } from './features/db/dbrt01/dbrt01.resolver';
 
 export const routes: Routes = [
   {
@@ -35,11 +36,13 @@ export const routes: Routes = [
       { 
         path: 'db/dbrt01/detail/new', 
         loadComponent: () => import('./features/db/dbrt01/dbrt01-detail.component').then(m => m.Dbrt01DetailComponent),
+        resolve: { employee: dbrt01Resolver },
         data: { programCode: 'DBRT01' }
       },
       { 
         path: 'db/dbrt01/detail/:id', 
         loadComponent: () => import('./features/db/dbrt01/dbrt01-detail.component').then(m => m.Dbrt01DetailComponent),
+        resolve: { employee: dbrt01Resolver },
         data: { programCode: 'DBRT01' }
       },
 

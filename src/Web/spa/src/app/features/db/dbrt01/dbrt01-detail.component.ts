@@ -64,15 +64,12 @@ export class Dbrt01DetailComponent implements OnInit {
 
   ngOnInit() {
     this.employeeId = this.route.snapshot.paramMap.get('id');
-    if (this.employeeId && this.employeeId !== 'new') {
-      this.isEditMode.set(true);
-      this.loadDbrt01(this.employeeId);
-    }
-  }
-
-  loadDbrt01(id: string) {
-    this.dbrt01Service.getDbrt01(id).subscribe(dbrt01 => {
-      this.form.patchValue(dbrt01);
+    
+    this.route.data.subscribe(({ employee }) => {
+      if (employee) {
+        this.isEditMode.set(true);
+        this.form.patchValue(employee);
+      }
     });
   }
 
